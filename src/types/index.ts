@@ -18,3 +18,20 @@ export interface ILogin {
   email: string;
   password: string;
 }
+
+export interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  phone: string;
+  address: any;
+  preferences: any;
+  isDeleted: boolean;
+  isVerified: boolean;
+  followedProfiles: any[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}

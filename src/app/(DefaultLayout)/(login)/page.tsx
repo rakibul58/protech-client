@@ -9,12 +9,15 @@ import PTInput from "@/src/components/form/PTInput";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { useUserLogin } from "@/src/hooks/auth.hook";
 import Loading from "@/src/components/UI/Loading";
+import { useUser } from "@/src/context/user.provider";
 
 export default function LoginPage() {
   const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
+  const { setIsLoading: userLoading } = useUser();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     handleUserLogin(data);
+    userLoading(true)
   };
 
   return (

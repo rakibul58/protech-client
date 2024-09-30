@@ -1,4 +1,4 @@
-import { AuthNavbar } from "@/src/components/AuthNavbar";
+import { AuthNavbar } from "@/src/components/UI/AuthNavbar";
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (

@@ -8,7 +8,6 @@ import { IInput } from "@/src/types";
 interface IProps extends IInput {}
 
 export default function PTInput({
-  variant = "bordered",
   size = "md",
   required = false,
   type = "text",
@@ -29,7 +28,8 @@ export default function PTInput({
       required={required}
       size={size}
       type={type}
-      variant={variant}
+      radius="sm"
+      isClearable
     />
   );
 }

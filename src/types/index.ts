@@ -13,3 +13,8 @@ export interface IInput {
   name: string;
   disabled?: boolean;
 }
+
+export interface ILogin {
+  email: string;
+  password: string;
+}

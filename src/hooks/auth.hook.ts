@@ -11,7 +11,7 @@ export const useUserRegistration = () => {
       toast.success("User registration successful.");
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error("Register Failed. Email might already exists.");
     },
   });
 };
@@ -24,7 +24,7 @@ export const useUserLogin = () => {
       toast.success("User login successful.");
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error("Login Failed. Please Provide Valid Email and Password.");
     },
   });
 };

@@ -7,7 +7,7 @@ const MeetTheTeam = () => {
     <section className="py-16">
       <div className="p-2 mx-auto space-y-16">
         <div className="space-y-4">
-          <h3 className="text-4xl font-bold leadi sm:text-4xl">
+          <h3 className="text-4xl font-bold leading sm:text-4xl">
             Meet Our Dream Team
           </h3>
           <p className="max-w-2xl text-foreground">
@@ -30,7 +30,7 @@ const MeetTheTeam = () => {
                 <Image
                   alt="Our Founding Team"
                   src={member.imageUrl}
-                  layout="fill" // Use fill layout for consistent width and height
+                  fill // Use fill layout for consistent width and height
                   className="rounded-lg shadow-lg object-cover"
                 />
               </div>

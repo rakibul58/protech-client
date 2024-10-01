@@ -1,3 +1,12 @@
+export const protectedRoutes = [
+  "/user",
+  "/user/:page*",
+  "/admin",
+  "/admin/:page*",
+  "/login",
+  "/register",
+];
+
 export const TeamList = [
   {
     name: "James Doe",
@@ -49,7 +58,6 @@ export const TeamList = [
   },
 ];
 
-
 export const Values = [
   {
     title: "User Empowerment",
@@ -88,4 +96,3 @@ export const Values = [
     icon: "https://cdn-icons-png.flaticon.com/512/2103/2103156.png",
   },
 ];
-

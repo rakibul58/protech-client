@@ -1,13 +1,16 @@
-"use client"
+"use client";
 
 import PTForm from "@/src/components/form/PTForm";
 import PTInput from "@/src/components/form/PTInput";
 import Loading from "@/src/components/UI/Loading";
+import { useUser } from "@/src/context/user.provider";
 import { useUserRegistration } from "@/src/hooks/auth.hook";
 import registerValidationSchema from "@/src/schemas/register.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 
 export default function RegisterPage() {
@@ -16,11 +19,32 @@ export default function RegisterPage() {
     isPending,
     isSuccess,
   } = useUserRegistration();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { user, setIsLoading: userLoading } = useUser();
+
+  const redirect = searchParams.get("redirect");
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     // console.log({ data });
     handleUserSignUp(data);
+    userLoading(true);
   };
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      console.log({ redirect });
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        if (user?.role === "user") {
+          router.push("/user/feed");
+        } else {
+          router.push("/admin/profile");
+        }
+      }
+    }
+  }, [isPending, isSuccess, userLoading, user]);
 
   return (
     <div>

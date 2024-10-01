@@ -35,3 +35,9 @@ export interface IUser {
   updatedAt: string;
   __v: number;
 }
+
+export type IMember = {
+  name: string;
+  title: string;
+  imageUrl: string;
+};

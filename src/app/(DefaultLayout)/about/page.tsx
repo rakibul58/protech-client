@@ -1,9 +1,13 @@
-import { title } from "@/src/components/primitives";
+import CompanyHistory from "@/src/components/modules/About/CompanyHistory";
+import MeetTheTeam from "@/src/components/modules/About/MeetTheTeam";
+import ValuesCommitment from "@/src/components/modules/About/ValuesCommitment";
 
 export default function AboutPage() {
   return (
     <div>
-      <h1 className={title()}>About</h1>
+      <CompanyHistory />
+      <MeetTheTeam />
+      <ValuesCommitment />
     </div>
   );
 }

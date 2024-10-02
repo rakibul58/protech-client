@@ -1,7 +1,9 @@
+import TopSection from "@/src/components/modules/Feed/TopSection";
+
 export default function FeedPage(){
   return (
     <div>
-      <h1>This is FeedPage Component</h1>
+      <TopSection />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { Input } from "@nextui-org/input";
 import { useFormContext } from "react-hook-form";
 
 import { IInput } from "@/src/types";
+import { ReactNode } from "react";
 
 interface IProps extends IInput {}
 

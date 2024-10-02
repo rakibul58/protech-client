@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { ReactNode, SVGProps } from "react";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -12,6 +12,7 @@ export interface IInput {
   label: string;
   name: string;
   disabled?: boolean;
+  startContent?: ReactNode
 }
 
 export interface ILogin {

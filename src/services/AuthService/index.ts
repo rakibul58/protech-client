@@ -1,8 +1,11 @@
 "use server";
 
+import envConfig from "@/src/config/envConfig";
 import axiosInstance from "@/src/libs/AxiosInstance";
+import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
+import { config } from "process";
 import { FieldValues } from "react-hook-form";
 
 export const registerUser = async (userData: FieldValues) => {
@@ -42,7 +45,6 @@ export const logout = () => {
   cookies().delete("refreshToken");
 };
 
-
 export const getCurrentUser = async () => {
   const accessToken = cookies().get("accessToken")?.value;
 
@@ -78,5 +80,38 @@ export const getNewAccessToken = async () => {
     return res.data;
   } catch (error) {
     throw new Error("Failed to get new access token");
+  }
+};
+
+export const forgetPassword = async (payload: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post("/auth/forget-password", payload);
+    // console.log(payload);
+    // console.log({data});
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const resetPassword = async (payload: FieldValues) => {
+  try {
+
+    const { data } = await axios.post(
+      `${envConfig.baseApi}/auth/reset-password`, 
+      payload.data, 
+      {
+        headers: {
+          Authorization: `${payload.token}` // Authorization header with Bearer token
+        }
+      }
+    );
+
+    // console.log(payload);
+    // console.log({data});
+    return data;
+  } catch (error: any) {
+    // console.log(error.response);
+    throw new Error(error);
   }
 };

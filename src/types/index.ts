@@ -29,8 +29,11 @@ export interface IUser {
   address: any;
   preferences: any;
   isDeleted: boolean;
+  isBlocked: boolean;
   isVerified: boolean;
-  followedProfiles: any[];
+  followers: any[];
+  following: any[];
+  profileImg: string;
   createdAt: string;
   updatedAt: string;
   __v: number;

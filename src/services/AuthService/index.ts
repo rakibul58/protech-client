@@ -5,7 +5,6 @@ import axiosInstance from "@/src/libs/AxiosInstance";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
-import { config } from "process";
 import { FieldValues } from "react-hook-form";
 
 export const registerUser = async (userData: FieldValues) => {
@@ -56,8 +55,10 @@ export const getCurrentUser = async () => {
     // console.log({decodedToken});
 
     return {
+      _id: decodedToken._id,
       email: decodedToken.email,
       role: decodedToken.role,
+      profileImg: decodedToken.profileImg,
     };
   }
 
@@ -96,14 +97,13 @@ export const forgetPassword = async (payload: FieldValues) => {
 
 export const resetPassword = async (payload: FieldValues) => {
   try {
-
     const { data } = await axios.post(
-      `${envConfig.baseApi}/auth/reset-password`, 
-      payload.data, 
+      `${envConfig.baseApi}/auth/reset-password`,
+      payload.data,
       {
         headers: {
-          Authorization: `${payload.token}` // Authorization header with Bearer token
-        }
+          Authorization: `${payload.token}`, // Authorization header with Bearer token
+        },
       }
     );
 

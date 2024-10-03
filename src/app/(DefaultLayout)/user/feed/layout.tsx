@@ -16,7 +16,7 @@ export default function Layout({
       {/* Sticky Top Section */}
 
       {/* Content with responsive design */}
-      <div className="hidden md:block fixed z-50 bg-white p-5 bg-opacity-70 backdrop-blur-md left-0 right-0 w-full max-w-6xl mx-auto -mt-1">
+      <div className="hidden md:block fixed z-50 bg-inherit p-5 backdrop-blur-md left-0 right-0 w-full max-w-6xl mx-auto -mt-1">
         {children}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 px-4">

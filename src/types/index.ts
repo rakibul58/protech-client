@@ -12,7 +12,7 @@ export interface IInput {
   label: string;
   name: string;
   disabled?: boolean;
-  startContent?: ReactNode
+  startContent?: ReactNode;
 }
 
 export interface ILogin {
@@ -37,6 +37,7 @@ export interface IUser {
   profileImg: string;
   createdAt: string;
   updatedAt: string;
+  commentsCount?: number;
   __v: number;
 }
 
@@ -45,3 +46,16 @@ export type IMember = {
   title: string;
   imageUrl: string;
 };
+
+export interface IPost {
+  _id: string;
+  author: IUser | string;
+  content: string;
+  categories: string[];
+  isPremium: boolean;
+  upvotes: string[];
+  downvotes: string[];
+  commentsCount?: number;
+  createdAt: string;
+  updatedAt: string;
+}

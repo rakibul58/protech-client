@@ -29,7 +29,7 @@ export default function Layout({
         <div className="col-span-12 lg:col-span-6 mt-5 md:mt-28">{posts}</div>
 
         {/* Followers and Followed Section (Right Side) - Hidden on small screens */}
-        <div className="hidden lg:block lg:col-span-3 space-y-6">
+        <div className="hidden lg:block lg:col-span-3 space-y-6 md:mt-28">
           <div className="sticky top-44 space-y-6">
             <div className="mb-6">
               <h2 className="text-lg font-bold mb-2">Followers</h2>

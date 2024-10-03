@@ -1,7 +1,11 @@
-export default function Page(){
+import PostCardSkeleton from "@/src/components/UI/PostCardSkeleton";
+
+export default async function FeedPage() {
   return (
-    <div className="flex items-center justify-center w-full h-40 bg-blue-200">
-      <h1>Posts Loading</h1>
+    <div className="flex flex-col gap-5 items-center justify-center w-full">
+      {[...Array(3)].map((_, index: number) => (
+        <PostCardSkeleton key={index} />
+      ))}
     </div>
   );
-};
+}

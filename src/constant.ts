@@ -96,3 +96,28 @@ export const Values = [
     icon: "https://cdn-icons-png.flaticon.com/512/2103/2103156.png",
   },
 ];
+
+
+export const predefinedCategories = [
+  "Technology",
+  "Science",
+  "Health",
+  "Lifestyle",
+  "Education",
+  "Finance",
+  "Travel",
+  "Food",
+  "Entertainment",
+  "Sports",
+  "Fashion",
+  "Art",
+  "Music",
+  "News",
+  "Gaming",
+  "Parenting",
+  "Home & Garden",
+  "Automotive",
+  "Self-Improvement",
+  "Business",
+  "Photography"
+];

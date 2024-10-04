@@ -1,34 +1,56 @@
 "use client";
 
-import { FieldValues, SubmitHandler } from "react-hook-form";
-import PTForm from "../../form/PTForm";
-import PTInput from "../../form/PTInput";
+import { useForm } from "react-hook-form";
 import { Button } from "@nextui-org/button";
-import { FilterIcon, PlusIcon } from "../../icons";
+import { FilterIcon } from "../../icons";
 import CreatePostModal from "../../modals/CreatePostModal";
+import { Input } from "@nextui-org/input";
+import { useDebounce } from "@/src/hooks/debounce.hook";
+import { useEffect } from "react";
 
-export default function TopSection() {
-  const onsubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log({ data });
+export default function TopSection({
+  onSearch,
+}: {
+  onSearch: (term: string) => void;
+}) {
+  const { register, watch } = useForm(); // Watch form inputs
+  const searchTerm = watch("searchTerm"); // Watch the searchTerm input
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 300); // Use debounce with 300ms delay
+
+  // Trigger onSearch with the debounced search term
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      onSearch(debouncedSearchTerm); // Pass the debounced search term to parent
+    }
+  }, [debouncedSearchTerm, onSearch]);
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
   };
 
   return (
     <div>
-      <div className="w-full grid grid-cols-1 md:grid-cols-5 items-center gap-4">
+      <div className="w-full flex flex-col md:flex-row items-center gap-4">
         {/* Input field: Full width on mobile, 4/5 on larger screens */}
-        <div className="col-span-1 md:col-span-4">
-          <PTForm onSubmit={onsubmit}>
-            <PTInput
+        <div className="md:w-[80%] w-full">
+          <form>
+            <Input
+              {...register("searchTerm")}
               size="md"
               label="Search...."
               name="searchTerm"
               type="text"
+              className="w-full"
+              onKeyPress={handleKeyPress}
             />
-          </PTForm>
+          </form>
         </div>
 
         {/* Button Section: Icon-only on small screens, full buttons on larger screens */}
-        <div className="flex justify-between w-full gap-3">
+        <div className="flex justify-between gap-3 md:w-[20%] w-full">
           <Button
             color="primary"
             variant="bordered"

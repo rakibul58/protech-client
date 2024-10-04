@@ -7,22 +7,34 @@ import { useUserResetPassword } from "@/src/hooks/auth.hook";
 import setPasswordValidationSchema from "@/src/schemas/setPassword.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 
 export default function SetPasswordPage() {
-  const { mutate: handleResetPassword, isPending } = useUserResetPassword();
+  const {
+    mutate: handleResetPassword,
+    isPending,
+    isSuccess,
+  } = useUserResetPassword();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const email = searchParams.get("email");
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const updatedData = {
       email,
-      newPassword: data.password
-    }
+      newPassword: data.password,
+    };
     handleResetPassword({ token, data: updatedData });
   };
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      router.push("/");
+    }
+  }, [isPending, isSuccess]);
 
   return (
     <div>

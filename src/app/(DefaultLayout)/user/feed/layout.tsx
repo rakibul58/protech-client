@@ -16,7 +16,7 @@ export default function Layout({
       {/* Sticky Top Section */}
 
       {/* Content with responsive design */}
-      <div className="hidden md:block fixed z-50 bg-inherit p-5 backdrop-blur-md left-0 right-0 w-full max-w-6xl mx-auto -mt-1">
+      <div className="hidden">
         {children}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 px-4">
@@ -26,7 +26,7 @@ export default function Layout({
         </div>
 
         {/* Posts Section (Center) */}
-        <div className="col-span-12 lg:col-span-6 mt-5 md:mt-28">{posts}</div>
+        <div className="col-span-12 lg:col-span-6">{posts}</div>
 
         {/* Followers and Followed Section (Right Side) - Hidden on small screens */}
         <div className="hidden lg:block lg:col-span-3 space-y-6 md:mt-28">
@@ -42,9 +42,9 @@ export default function Layout({
           </div>
         </div>
 
-        <div className="md:hidden block w-full fixed bottom-0 left-0 right-0 z-50 bg-white p-5 bg-opacity-70 backdrop-blur-md col-span-12 lg:col-span-12">
+        {/* <div className="md:hidden block w-full fixed bottom-0 left-0 right-0 z-50 bg-white p-5 bg-opacity-70 backdrop-blur-md col-span-12 lg:col-span-12">
           {children}
-        </div>
+        </div> */}
       </div>
     </div>
   );

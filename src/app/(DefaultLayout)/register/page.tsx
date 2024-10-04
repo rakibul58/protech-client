@@ -23,7 +23,6 @@ export default function RegisterPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user, setIsLoading: userLoading } = useUser();
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [image, setImage] = useState<any>({});
 

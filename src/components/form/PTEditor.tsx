@@ -1,4 +1,5 @@
 "use client";
+import envConfig from "@/src/config/envConfig";
 import { handleImageUpload } from "@/src/services/ImageUpload";
 import { Editor } from "@tinymce/tinymce-react";
 
@@ -29,7 +30,7 @@ export default function PTEditor({ content, setContent }: MyEditorProps) {
   return (
     <div>
       <Editor
-        apiKey="ve2a6affhn2oct5yt9z1od7ekdl5miwzzagvnjn83nlq4cug"
+        apiKey={envConfig.editorApiKey}
         value={content} // Bind content from the parent state
         onEditorChange={(newContent) => setContent(newContent)}
         init={{

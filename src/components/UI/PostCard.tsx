@@ -117,7 +117,7 @@ export default function PostCard({ post }: { post: IPost }) {
   //   return <PostCardSkeleton />;
   // }
 
-  console.log({ post });
+  // console.log({ post });
 
   return (
     <div className="p-4 bg-white dark:bg-gray-800 shadow-md rounded-lg w-full mb-6">

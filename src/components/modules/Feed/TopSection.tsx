@@ -1,8 +1,6 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { Button } from "@nextui-org/button";
-import { FilterIcon } from "../../icons";
 import CreatePostModal from "../../modals/CreatePostModal";
 import { Input } from "@nextui-org/input";
 import { useDebounce } from "@/src/hooks/debounce.hook";
@@ -13,7 +11,7 @@ import { Select, SelectItem } from "@nextui-org/select";
 export default function TopSection({
   onSearch,
   setCategory,
-  setSort
+  setSort,
 }: {
   onSearch: (term: string) => void;
   setCategory: (category: string) => void;
@@ -64,20 +62,26 @@ export default function TopSection({
             placeholder="Select sort parameter"
             size="sm"
             className="w-full"
-            onChange={(e)=>setSort(e.target.value)}
+            onChange={(e) => setSort(e.target.value)}
           >
-            <SelectItem value='-upvoteCount' key="-upvoteCount">Upvote</SelectItem>
-            <SelectItem value='-downvoteCount' key="-downvoteCount">Downvote</SelectItem>
+            <SelectItem value="-upvoteCount" key="-upvoteCount">
+              Upvote
+            </SelectItem>
+            <SelectItem value="-downvoteCount" key="-downvoteCount">
+              Downvote
+            </SelectItem>
           </Select>
           <Select
             label="Filter By Category"
             placeholder="Select a category"
             size="sm"
             className="w-full"
-            onChange={(e)=>setCategory(e.target.value)}
+            onChange={(e) => setCategory(e.target.value)}
           >
             {predefinedCategories.map((category) => (
-              <SelectItem key={category} value={category}>{category}</SelectItem>
+              <SelectItem key={category} value={category}>
+                {category}
+              </SelectItem>
             ))}
           </Select>
           {/* <Button

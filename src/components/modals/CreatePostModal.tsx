@@ -11,26 +11,30 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreatePosts } from "@/src/hooks/post.hook";
 import Loading from "../UI/Loading";
+import { useUser } from "@/src/context/user.provider";
 
 const CreatePostModal = () => {
   const [content, setContent] = useState<string>(``);
   const { handleSubmit, register } = useForm();
   const { mutate: createPost, isPending } = useCreatePosts();
+  const { user } = useUser();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if(data.category.length===""){
+    if (data.category.length === "") {
       return toast.error("Select Category!");
     }
     if (content === ``) {
       return toast.error("Post has no content!");
     }
-    createPost({ content, categories: data.category.split(",") });
+    createPost({
+      content,
+      categories: data.category.split(","),
+      isPremium: data.isPremium === "true" ? true : false,
+    });
   };
 
   if (isPending) {
-    return (
-      <Loading />
-    );
+    return <Loading />;
   }
 
   return (
@@ -57,6 +61,20 @@ const CreatePostModal = () => {
               <SelectItem key={category}>{category}</SelectItem>
             ))}
           </Select>
+          <Select
+            isRequired
+            label="Premium"
+            placeholder="Is the post premium?"
+            // defaultSelectedKeys={[predefinedCategories[0]]}
+            className="w-full mb-2"
+            // selectionMode="multiple"
+            {...register("isPremium", { required: true })}
+            
+          >
+            <SelectItem isDisabled={!user?.isVerified} key="true">Yes</SelectItem>
+            <SelectItem key="false">No</SelectItem>
+          </Select>
+
           <PTEditor content={content} setContent={setContent} />
           <div>
             <Button className="w-full flex-1 my-2" size="lg" type="submit">

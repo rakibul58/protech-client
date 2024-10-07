@@ -34,9 +34,13 @@ export const getPosts = async (
 export const createPosts = async (payload: {
   content: string;
   categories: string[];
+  isPremium: boolean;
 }) => {
   try {
-    const { data } = await axiosInstance.post(`/posts`, payload);
+     // Ensure new post initializes downvotes
+    const newPayload = {...payload , upvotes:[],
+      downvotes: [], upvoteCount: 0, downvoteCount: 0 }
+    const { data } = await axiosInstance.post(`/posts`, newPayload);
     return data;
   } catch (error: any) {
     console.log({ error });

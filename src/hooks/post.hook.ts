@@ -29,12 +29,17 @@ export const useGetPosts = (
 export const useCreatePosts = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<any, Error, { content: string; categories: string[] }>({
+  return useMutation<
+    any,
+    Error,
+    { content: string; categories: string[]; isPremium: boolean }
+  >({
     mutationKey: ["CREATE_POSTS"],
     mutationFn: async (payload) => await createPosts(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["GET_POSTS"] });
-      toast.success("Post created successful.");
+      // queryClient.invalidateQueries({ queryKey: ["GET_POSTS"] });
+      // queryClient.refetchQueries({ queryKey: ["GET_POSTS"], exact: true }); 
+      toast.success("Post created successfully.");
     },
     onError: (error) => {
       console.log(error);

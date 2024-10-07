@@ -7,7 +7,9 @@ import { motion } from "framer-motion";
 import { Button } from "@nextui-org/button";
 import TopSection from "@/src/components/modules/Feed/TopSection";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "@/src/context/user.provider";
 export default function FeedPage() {
+  const { user } = useUser();
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
@@ -88,6 +90,7 @@ export default function FeedPage() {
         {!isLoading &&
           data?.pages.map((page, pageIndex) =>
             page.result.map((post: any, postIndex: number) => (
+              // post.author._id !== (user?._id) &&
               <motion.div
                 key={`${pageIndex}-${postIndex}`}
                 custom={postIndex}
@@ -117,7 +120,11 @@ export default function FeedPage() {
           <div className="flex flex-col items-center mt-4">
             {/* Back to Top button */}
             <Button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" }),
+                  queryClient.removeQueries({ queryKey: ["GET_POSTS"] });
+                refetch();
+              }}
               variant="light"
               color="primary"
             >

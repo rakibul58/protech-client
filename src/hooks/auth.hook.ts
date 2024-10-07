@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import {
   forgetPassword,
+  getVerified,
   loginUser,
   registerUser,
   resetPassword,
@@ -47,13 +48,26 @@ export const useUserForgetPassword = () => {
   });
 };
 
-
-export const useUserResetPassword= () => {
+export const useUserResetPassword = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["USER_RESET_PASSWORD"],
     mutationFn: async (payload) => await resetPassword(payload),
     onSuccess: () => {
       toast.success("Password reset successfully.");
+    },
+    onError: (error) => {
+      toast.error("Something went wrong.");
+    },
+  });
+};
+
+export const useGetVerified = () => {
+  return useMutation<any, Error>({
+    mutationKey: ["USER_VERIFICATION"],
+    mutationFn: async () => await getVerified(),
+    onSuccess: ({ data }) => {
+      window.location.href = data.payment_url;
+      toast.success("Verification initiated successfully.");
     },
     onError: (error) => {
       toast.error("Something went wrong.");

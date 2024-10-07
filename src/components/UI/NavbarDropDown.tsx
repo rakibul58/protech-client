@@ -59,8 +59,14 @@ export default function NavbarDropdown() {
             <DropdownItem>
               <div>
                 <div className="flex gap-1">
-                  <span className="text-secondary font-semibold">{user?.name}</span>{" "}
-                  <span>{user.isVerified && <CheckBadgeIcon className="size-5 text-primary" />}</span>
+                  <span className="text-secondary font-semibold">
+                    {user?.name}
+                  </span>{" "}
+                  <span>
+                    {user.isVerified && (
+                      <CheckBadgeIcon className="size-5 text-primary" />
+                    )}
+                  </span>
                 </div>
                 <span>{user?.email}</span>
               </div>
@@ -70,6 +76,11 @@ export default function NavbarDropdown() {
             </DropdownItem>
             <DropdownItem onClick={() => handleNavigation("/user/feed")}>
               Feed
+            </DropdownItem>
+            <DropdownItem
+              onClick={() => handleNavigation("/user/get-verified")}
+            >
+              Get Verified
             </DropdownItem>
 
             <DropdownItem

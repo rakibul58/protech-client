@@ -117,3 +117,14 @@ export const resetPassword = async (payload: FieldValues) => {
     throw new Error(error);
   }
 };
+
+export const getVerified = async () => {
+  try {
+    const { data } = await axiosInstance.post("/auth/initiate-payment");
+    // console.log(payload);
+    // console.log({data});
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};

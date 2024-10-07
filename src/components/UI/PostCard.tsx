@@ -5,14 +5,21 @@ import {
   ChatBubbleLeftIcon,
   HandThumbDownIcon,
   HandThumbUpIcon,
-  UserPlusIcon,
 } from "@heroicons/react/24/outline";
-import { useRef } from "react";
+import {
+  HandThumbDownIcon as SolidThumbDownIcon,
+  HandThumbUpIcon as SolidThumbUpIcon,
+} from "@heroicons/react/24/solid";
+import { useRef, useState } from "react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import PayWall from "./PayWall";
+import { useUser } from "@/src/context/user.provider";
+import { useUpVotePost } from "@/src/hooks/post.hook";
 
 export default function PostCard({ post }: { post: IPost }) {
   const postRef = useRef<HTMLDivElement | null>(null); // Create a reference to the post content
+  const { user } = useUser();
 
   const handleDownloadPDF = async () => {
     if (postRef.current) {
@@ -58,7 +65,11 @@ export default function PostCard({ post }: { post: IPost }) {
       pdf.addImage(imageData, "JPEG", sidePadding, 0, imgWidth, imgHeight);
 
       // Save the PDF
-      pdf.save(`${(post?.author as IUser)?.name}-${new Date(post.createdAt).toLocaleString()}.pdf`);
+      pdf.save(
+        `${(post?.author as IUser)?.name}-${new Date(
+          post.createdAt
+        ).toLocaleString()}.pdf`
+      );
 
       // Optional: Remove the temporary padding/margin modifications if needed
       element.querySelectorAll("img").forEach((img) => {
@@ -66,33 +77,50 @@ export default function PostCard({ post }: { post: IPost }) {
       });
     }
   };
+  const [upvotesCount, setUpvotesCount] = useState(post.upvotes.length);
+  const [downvotesCount, setDownvotesCount] = useState(post.downvotes.length);
+  const [isUpVoted, setIsUpVoted] = useState(
+    post.upvotes.includes(user?._id as string)
+  );
+  const [isDownVoted, setIsDownVoted] = useState(
+    post.downvotes.includes(user?._id as string)
+  );
 
-  // const [isFollowed, setIsFollowed] = useState(followed);
-  // const [upvotesCount, setUpvotesCount] = useState(post.upvotes.length);
-  // const [downvotesCount, setDownvotesCount] = useState(post.downvotes.length);
+  const { mutate: handleUpvotePost } = useUpVotePost();
 
-  // const handleFollow = () => {
-  //   setIsFollowed(true);
-  //   // Logic for following the user
-  // };
+  const handleUpvote = () => {
+    handleUpvotePost({ postId: post._id });
+    if (!isUpVoted) {
+      setIsUpVoted(true);
+      setUpvotesCount((prev) => prev + 1);
+    }
+    if (isDownVoted) {
+      setIsDownVoted(false);
+      setDownvotesCount((prev) => prev - 1);
+    }
+  };
 
-  // const handleUpvote = () => {
-  //   setUpvotesCount((prev) => prev + 1);
-  //   // Logic to update the upvote count
-  // };
-
-  // const handleDownvote = () => {
-  //   setDownvotesCount((prev) => prev + 1);
-  //   // Logic to update the downvote count
-  // };
+  const handleDownvote = () => {
+    if (!isDownVoted) {
+      setIsDownVoted(true);
+      setDownvotesCount((prev) => prev + 1);
+    }
+    if (isUpVoted) {
+      setIsUpVoted(false);
+      setUpvotesCount((prev) => prev - 1);
+    }
+  };
 
   // if (loading) {
   //   return <PostCardSkeleton />;
   // }
 
+  console.log({ post });
+
   return (
     <div className="p-4 bg-white dark:bg-gray-800 shadow-md rounded-lg w-full mb-6">
       {/* Post Header - Author and Time */}
+      {post?.isPremium && !user?.isVerified && <PayWall />}
       <div className="flex items-center mb-4">
         {/* Profile Picture */}
         <img
@@ -141,10 +169,14 @@ export default function PostCard({ post }: { post: IPost }) {
             color="primary"
             variant="light"
             className="flex items-center space-x-2"
-            // onClick={handleUpvote}
+            onClick={handleUpvote}
           >
-            <HandThumbUpIcon className="w-6 h-6 text-blue-500 dark:text-blue-400" />
-            <span className="dark:text-white">{post?.upvotes?.length}</span>
+            {!isUpVoted ? (
+              <HandThumbUpIcon className="w-6 h-6 text-blue-500 dark:text-blue-400" />
+            ) : (
+              <SolidThumbUpIcon className="w-6 h-6 text-blue-500 dark:text-blue-400" />
+            )}
+            <span className="dark:text-white">{upvotesCount}</span>
           </Button>
 
           {/* Downvote Button */}
@@ -153,10 +185,14 @@ export default function PostCard({ post }: { post: IPost }) {
             color="secondary"
             variant="light"
             className="flex items-center space-x-2"
-            // onClick={handleDownvote}
+            onClick={handleDownvote}
           >
-            <HandThumbDownIcon className="w-6 h-6 text-red-500 dark:text-red-400" />
-            <span className="dark:text-white">{post?.downvotes?.length}</span>
+            {!isDownVoted ? (
+              <HandThumbDownIcon className="w-6 h-6 text-red-500 dark:text-red-400" />
+            ) : (
+              <SolidThumbDownIcon className="w-6 h-6 text-red-500 dark:text-red-400" />
+            )}
+            <span className="dark:text-white">{downvotesCount}</span>
           </Button>
 
           {/* Comment Icon */}

@@ -6,23 +6,28 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/button";
 import TopSection from "@/src/components/modules/Feed/TopSection";
+import { useQueryClient } from "@tanstack/react-query";
 export default function FeedPage() {
-  const [searchTerm, setSearchTerm] = useState(""); 
-  const [category, setCategory] = useState(""); 
-  const [sort, setSort] = useState("-createAt"); 
+  const queryClient = useQueryClient();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState("");
+  const [sort, setSort] = useState("-createdAt");
   const {
     data,
     isLoading,
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
+    refetch,
   } = useGetPosts(searchTerm, category, sort);
 
   // Ref for detecting when the user reaches the bottom of the page
   const loadMoreRef = useRef(null);
 
-  console.log({sort});
-
+  useEffect(() => {
+    queryClient.removeQueries({ queryKey: ["GET_POSTS"] });
+    refetch();
+  }, [category, sort, searchTerm]);
 
   // Intersection Observer to load more posts when the bottom of the page is reached
   useEffect(() => {

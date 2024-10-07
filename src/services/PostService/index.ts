@@ -17,6 +17,8 @@ export const getPosts = async (
     if (category) {
       url = `/posts?sort=${sort}&page=${page}&limit=${limit}&searchTerm=${searchTerm}&categories=${category}`;
     }
+
+    // console.log({sort});
     const { data } = await axiosInstance.get(url);
 
     return {
@@ -35,6 +37,17 @@ export const createPosts = async (payload: {
 }) => {
   try {
     const { data } = await axiosInstance.post(`/posts`, payload);
+    return data;
+  } catch (error: any) {
+    console.log({ error });
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const upVotePost = async ({ postId }: { postId: string }) => {
+  try {
+    // console.log(postId);
+    const { data } = await axiosInstance.post(`/posts/${postId}/upvote`);
     return data;
   } catch (error: any) {
     console.log({ error });

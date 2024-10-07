@@ -6,28 +6,23 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@nextui-org/button";
 import TopSection from "@/src/components/modules/Feed/TopSection";
-import { useQueryClient } from "@tanstack/react-query";
 export default function FeedPage() {
-  const [searchTerm, setSearchTerm] = useState(""); // State to store search term
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [category, setCategory] = useState(""); 
+  const [sort, setSort] = useState("-createAt"); 
   const {
     data,
     isLoading,
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-    refetch,
-  } = useGetPosts(searchTerm);
-  const queryClient = useQueryClient();
+  } = useGetPosts(searchTerm, category, sort);
 
   // Ref for detecting when the user reaches the bottom of the page
   const loadMoreRef = useRef(null);
 
-  useEffect(() => {
-    if (searchTerm === "") {
-      queryClient.invalidateQueries({ queryKey: ["GET_POSTS"] });
-      refetch();
-    }
-  }, [searchTerm, refetch, queryClient]);
+  console.log({sort});
+
 
   // Intersection Observer to load more posts when the bottom of the page is reached
   useEffect(() => {
@@ -64,10 +59,18 @@ export default function FeedPage() {
     <div>
       {" "}
       <div className="md:hidden block max-w-6xl mx-auto w-full fixed bottom-0 left-0 right-0 z-50 p-5 bg-white dark:bg-black bg-opacity-70 backdrop-blur-md col-span-12 lg:col-span-12">
-        <TopSection onSearch={setSearchTerm} />
+        <TopSection
+          onSearch={setSearchTerm}
+          setCategory={setCategory}
+          setSort={setSort}
+        />
       </div>
       <div className="hidden md:block max-w-6xl mx-auto w-full fixed top-14 left-0 right-0 z-50 p-5 bg-opacity-70 backdrop-blur-md col-span-12 lg:col-span-12">
-        <TopSection onSearch={setSearchTerm} />
+        <TopSection
+          onSearch={setSearchTerm}
+          setCategory={setCategory}
+          setSort={setSort}
+        />
       </div>
       <div className="flex flex-col gap-5 items-center justify-center w-full mb-40 mt-5 md:mt-28 md:mb-10">
         {/* Show skeleton loader while fetching the first batch of posts */}
@@ -106,7 +109,7 @@ export default function FeedPage() {
 
         {/* If no more data to load */}
         {!hasNextPage && !isLoading && (
-          <div className="flex flex-col items-center mt-8">
+          <div className="flex flex-col items-center mt-4">
             {/* Back to Top button */}
             <Button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

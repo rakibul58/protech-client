@@ -59,6 +59,8 @@ export const getCurrentUser = async () => {
       email: decodedToken.email,
       role: decodedToken.role,
       profileImg: decodedToken.profileImg,
+      name: decodedToken.name,
+      isVerified: decodedToken.isVerified,
     };
   }
 

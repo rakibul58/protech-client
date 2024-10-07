@@ -7,11 +7,11 @@ import { createPosts, getPosts } from "../services/PostService";
 import { toast } from "sonner";
 
 // Hook for infinite scrolling with React Query
-export const useGetPosts = (searchTerm = "") => {
+export const useGetPosts = (searchTerm = "", category="", sort="-createAt") => {
   return useInfiniteQuery({
-    queryKey: ["GET_POSTS", searchTerm],
+    queryKey: ["GET_POSTS", searchTerm, category, sort],
     queryFn: async ({ pageParam = 1 }) =>
-      await getPosts(pageParam, 5, searchTerm),
+      await getPosts(pageParam, 5, searchTerm, category, sort),
     getNextPageParam: (lastPage) => lastPage.nextPage, // Determine if there's a next page
     initialPageParam: 1, // Set the initial page to 1
   });

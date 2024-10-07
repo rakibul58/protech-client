@@ -14,6 +14,7 @@ import { useUser } from "@/src/context/user.provider";
 import { protectedRoutes } from "@/src/constant";
 import Loading from "./Loading";
 import { useState } from "react";
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 // import { protectedRoutes } from "@/src/constant";
 
 export default function NavbarDropdown() {
@@ -22,7 +23,7 @@ export default function NavbarDropdown() {
   const { user, setIsLoading: userLoading } = useUser();
   const [isNavigateLoading, setIsNavigateLoading] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsNavigateLoading(true);
     logout();
     userLoading(true);
@@ -55,6 +56,15 @@ export default function NavbarDropdown() {
         </DropdownTrigger>
         {user?.role === "user" ? (
           <DropdownMenu aria-label="Static Actions">
+            <DropdownItem>
+              <div>
+                <div className="flex gap-1">
+                  <span className="text-secondary font-semibold">{user?.name}</span>{" "}
+                  <span>{user.isVerified && <CheckBadgeIcon className="size-5 text-primary" />}</span>
+                </div>
+                <span>{user?.email}</span>
+              </div>
+            </DropdownItem>
             <DropdownItem onClick={() => handleNavigation("/user/profile")}>
               Profile
             </DropdownItem>

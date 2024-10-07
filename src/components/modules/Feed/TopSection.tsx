@@ -7,16 +7,22 @@ import CreatePostModal from "../../modals/CreatePostModal";
 import { Input } from "@nextui-org/input";
 import { useDebounce } from "@/src/hooks/debounce.hook";
 import { useEffect } from "react";
+import { predefinedCategories } from "@/src/constant";
+import { Select, SelectItem } from "@nextui-org/select";
 
 export default function TopSection({
   onSearch,
+  setCategory,
+  setSort
 }: {
   onSearch: (term: string) => void;
+  setCategory: (category: string) => void;
+  setSort: (category: string) => void;
 }) {
   const { register, watch } = useForm(); // Watch form inputs
   const searchTerm = watch("searchTerm"); // Watch the searchTerm input
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 300); // Use debounce with 300ms delay
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   // Trigger onSearch with the debounced search term
   useEffect(() => {
@@ -35,31 +41,45 @@ export default function TopSection({
     <div>
       <div className="w-full flex flex-col md:flex-row items-center gap-4">
         {/* Input field: Full width on mobile, 4/5 on larger screens */}
-        <div className="md:w-[80%] w-full">
+        <div className="md:w-[40%] w-full">
           <form>
             <Input
               {...register("searchTerm")}
-              size="md"
+              size="sm"
               label="Search...."
               name="searchTerm"
               type="text"
               className="w-full"
+              isClearable
+              onClear={() => onSearch("")}
               onKeyPress={handleKeyPress}
             />
           </form>
         </div>
 
         {/* Button Section: Icon-only on small screens, full buttons on larger screens */}
-        <div className="flex justify-between gap-3 md:w-[20%] w-full">
-          <Button
-            color="primary"
-            variant="bordered"
-            className="w-full py-3"
-            startContent={<FilterIcon />}
-            aria-label="Filter"
+        <div className="flex justify-between gap-3 md:w-[60%] w-full box-border flex-wrap-reverse md:flex-nowrap">
+          <Select
+            label="Sort By"
+            placeholder="Select sort parameter"
+            size="sm"
+            className="w-full"
+            onChange={(e)=>setSort(e.target.value)}
           >
-            Filter
-          </Button>
+            <SelectItem value='-upvoteCount' key="-upvoteCount">Upvote</SelectItem>
+            <SelectItem value='-downvoteCount' key="-downvoteCount">Downvote</SelectItem>
+          </Select>
+          <Select
+            label="Filter By Category"
+            placeholder="Select a category"
+            size="sm"
+            className="w-full"
+            onChange={(e)=>setCategory(e.target.value)}
+          >
+            {predefinedCategories.map((category) => (
+              <SelectItem key={category} value={category}>{category}</SelectItem>
+            ))}
+          </Select>
           {/* <Button
               color="secondary"
               variant="bordered"

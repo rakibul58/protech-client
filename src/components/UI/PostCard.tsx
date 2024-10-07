@@ -168,7 +168,7 @@ export default function PostCard({ post }: { post: IPost }) {
           >
             <ChatBubbleLeftIcon className="w-6 h-6 text-gray-500 dark:text-gray-300" />
             <span className="dark:text-white">
-              {post?.commentsCount ? post?.commentsCount : 0}
+              {post?.comments ? post?.comments?.length : 0}
             </span>
           </Button>
 
@@ -183,7 +183,7 @@ export default function PostCard({ post }: { post: IPost }) {
           </Button>
         </div>
 
-        {/* Follow Button */}
+        {/* Follow Button
         {true && (
           <Button
             // onClick={handleFollow}
@@ -194,7 +194,7 @@ export default function PostCard({ post }: { post: IPost }) {
             <UserPlusIcon className="w-6 h-6 text-white" />
             <span>Follow</span>
           </Button>
-        )}
+        )} */}
       </div>
     </div>
   );

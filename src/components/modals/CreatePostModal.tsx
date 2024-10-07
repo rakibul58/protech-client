@@ -10,7 +10,6 @@ import { predefinedCategories } from "@/src/constant";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreatePosts } from "@/src/hooks/post.hook";
-import { CircularProgress } from "@nextui-org/progress";
 import Loading from "../UI/Loading";
 
 const CreatePostModal = () => {
@@ -34,11 +33,11 @@ const CreatePostModal = () => {
   return (
     <div>
       <PTModal
-        buttonClassName="w-full"
+        buttonClassName="w-full h-full"
         buttonText="Create"
         title="Create Post"
         buttonVariant="bordered"
-        buttonColor="secondary"
+        buttonColor="primary"
         buttonStartContent={<PlusIcon />}
       >
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -55,7 +55,7 @@ export interface IPost {
   isPremium: boolean;
   upvotes: string[];
   downvotes: string[];
-  commentsCount?: number;
+  comments?: string[];
   createdAt: string;
   updatedAt: string;
 }

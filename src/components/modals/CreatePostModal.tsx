@@ -18,6 +18,9 @@ const CreatePostModal = () => {
   const { mutate: createPost, isPending } = useCreatePosts();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if(data.category.length===""){
+      return toast.error("Select Category!");
+    }
     if (content === ``) {
       return toast.error("Post has no content!");
     }
@@ -45,7 +48,7 @@ const CreatePostModal = () => {
             isRequired
             label="Category"
             placeholder="Select a Category"
-            defaultSelectedKeys={[predefinedCategories[0]]}
+            // defaultSelectedKeys={[predefinedCategories[0]]}
             className="w-full mb-2"
             selectionMode="multiple"
             {...register("category", { required: true })}

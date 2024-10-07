@@ -15,7 +15,7 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import PayWall from "./PayWall";
 import { useUser } from "@/src/context/user.provider";
-import { useUpVotePost } from "@/src/hooks/post.hook";
+import { useDownVotePost, useUpVotePost } from "@/src/hooks/post.hook";
 
 export default function PostCard({ post }: { post: IPost }) {
   const postRef = useRef<HTMLDivElement | null>(null); // Create a reference to the post content
@@ -87,6 +87,7 @@ export default function PostCard({ post }: { post: IPost }) {
   );
 
   const { mutate: handleUpvotePost } = useUpVotePost();
+  const { mutate: handleDownvotePost } = useDownVotePost();
 
   const handleUpvote = () => {
     handleUpvotePost({ postId: post._id });
@@ -101,6 +102,7 @@ export default function PostCard({ post }: { post: IPost }) {
   };
 
   const handleDownvote = () => {
+    handleDownvotePost({ postId: post._id });
     if (!isDownVoted) {
       setIsDownVoted(true);
       setDownvotesCount((prev) => prev + 1);

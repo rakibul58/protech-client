@@ -3,7 +3,12 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { createPosts, getPosts, upVotePost } from "../services/PostService";
+import {
+  createPosts,
+  downVotePost,
+  getPosts,
+  upVotePost,
+} from "../services/PostService";
 import { toast } from "sonner";
 
 // Hook for infinite scrolling with React Query
@@ -28,7 +33,7 @@ export const useCreatePosts = () => {
     mutationKey: ["CREATE_POSTS"],
     mutationFn: async (payload) => await createPosts(payload),
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ["GET_POSTS"] });
+      queryClient.invalidateQueries({ queryKey: ["GET_POSTS"] });
       toast.success("Post created successful.");
     },
     onError: (error) => {
@@ -42,6 +47,20 @@ export const useUpVotePost = () => {
   return useMutation<any, Error, { postId: string }>({
     mutationKey: ["UPVOTE_POST"],
     mutationFn: async ({ postId }) => await upVotePost({ postId }),
+    onSuccess: () => {
+      // toast.success("Post upVoted successful.");
+    },
+    onError: (error) => {
+      // console.log(error);
+      // toast.error("Failed to Create Post!");
+    },
+  });
+};
+
+export const useDownVotePost = () => {
+  return useMutation<any, Error, { postId: string }>({
+    mutationKey: ["DOWNVOTE_POST"],
+    mutationFn: async ({ postId }) => await downVotePost({ postId }),
     onSuccess: () => {
       // toast.success("Post upVoted successful.");
     },

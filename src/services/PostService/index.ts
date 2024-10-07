@@ -54,3 +54,14 @@ export const upVotePost = async ({ postId }: { postId: string }) => {
     throw new Error(error.response.data.message);
   }
 };
+
+export const downVotePost = async ({ postId }: { postId: string }) => {
+  try {
+    // console.log(postId);
+    const { data } = await axiosInstance.post(`/posts/${postId}/downvote`);
+    return data;
+  } catch (error: any) {
+    console.log({ error });
+    throw new Error(error.response.data.message);
+  }
+};

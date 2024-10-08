@@ -9,7 +9,7 @@ import Link from "next/link";
 export default async function Page() {
   const { data: recommendedUsers, isLoading } = useGetRecommended();
 
-  console.log(recommendedUsers?.pages[0]?.result?.result);
+  // console.log(recommendedUsers?.pages[0]?.result?.result);
 
   // Animation variants for staggered effect
   const postVariants = {

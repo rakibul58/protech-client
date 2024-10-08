@@ -1,36 +1,41 @@
 import React, { useState } from "react";
 import { IComment } from "@/src/types";
 import { useUser } from "@/src/context/user.provider";
+import { useAddComment } from "@/src/hooks/comment.hook";
+import { Button } from "@nextui-org/button";
 
 interface CommentProps {
   comment: IComment;
-  onDelete: (commentId: string) => void;
-  onUpdate: (commentId: string, newContent: string) => void;
-  onReply: (parentCommentId: string, replyContent: string) => void;
 }
 
-export default function Comment({
-  comment,
-  onDelete,
-  onUpdate,
-  onReply,
-}: CommentProps) {
+export default function Comment({ comment }: CommentProps) {
   const { user } = useUser();
   const [isEditing, setIsEditing] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [showReplies, setShowReplies] = useState(false); // Toggle for replies
   const [replyContent, setReplyContent] = useState("");
   const [editContent, setEditContent] = useState(comment.content);
+  const { mutate: addReply, isPending } = useAddComment();
 
   const handleUpdate = () => {
-    onUpdate(comment._id, editContent);
+    //     onUpdate(comment._id, editContent);
     setIsEditing(false);
   };
 
-  const handleReply = () => {
-    onReply(comment._id, replyContent);
-    setReplyContent("");
-    setIsReplying(false);
+  const handleReply = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      addReply({
+        content: replyContent,
+        post: comment.post,
+        parent: comment._id,
+      });
+      setReplyContent("");
+      setIsReplying(false);
+      setShowReplies(true);
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+    }
   };
 
   return (
@@ -43,7 +48,7 @@ export default function Comment({
         />
         <span className="font-bold">{comment.author?.name}</span>
         <span className="ml-2 text-sm text-gray-500">
-          {new Date(comment.createdAt).toLocaleDateString()}
+          {new Date(comment.createdAt).toLocaleString()}
         </span>
 
         {user?._id === comment.author?._id && (
@@ -55,7 +60,7 @@ export default function Comment({
               Edit
             </button>
             <button
-              onClick={() => onDelete(comment._id)}
+              //       onClick={() => onDelete(comment._id)}
               className="px-2 text-sm text-red-500 hover:underline"
             >
               Delete
@@ -95,21 +100,22 @@ export default function Comment({
 
       {/* Reply Form */}
       {isReplying && (
-        <div className="mt-2">
+        <form onSubmit={handleReply} className="mt-2 flex items-center gap-3">
           <input
             type="text"
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
             placeholder="Write your reply..."
-            className="w-full px-2 py-1 border border-gray-300 rounded dark:bg-gray-700"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
           />
-          <button
-            onClick={handleReply}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          <Button
+            type="submit"
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50 h-full"
+            disabled={!replyContent || isPending}
           >
-            Reply
-          </button>
-        </div>
+            {isPending ? "Replying..." : "Reply"}
+          </Button>
+        </form>
       )}
 
       {/* Toggle Replies Button */}
@@ -131,9 +137,9 @@ export default function Comment({
             <Comment
               key={reply._id}
               comment={reply}
-              onDelete={onDelete}
-              onUpdate={onUpdate}
-              onReply={onReply}
+              //       onDelete={onDelete}
+              //       onUpdate={onUpdate}
+              //       onReply={onReply}
             />
           ))}
         </div>

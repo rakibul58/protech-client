@@ -1,34 +1,24 @@
-"use client"
+"use client";
+import { useAddComment } from "@/src/hooks/comment.hook";
 import { Button } from "@nextui-org/button";
 import { useState } from "react";
 
 interface CommentFormProps {
   postId: string;
-  onCommentAdded: (comment: any) => void;
 }
 
-export default function CommentForm({
-  postId,
-  onCommentAdded,
-}: CommentFormProps) {
+export default function CommentForm({ postId }: CommentFormProps) {
   const [content, setContent] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { mutate: addComment, isPending } = useAddComment();
 
   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     try {
-//       const { data } = await axiosInstance.post(`/comments`, {
-//         postId,
-//         content,
-//       });
-//       onCommentAdded(data.result);
-//       setContent("");
-//     } catch (error) {
-//       console.error("Failed to add comment:", error);
-//     } finally {
-//       setLoading(false);
-//     }
+    e.preventDefault();
+    try {
+      addComment({ content, post: postId });
+      setContent("");
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+    }
   };
 
   return (
@@ -43,9 +33,9 @@ export default function CommentForm({
       <Button
         type="submit"
         className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50"
-        disabled={!content || loading}
+        disabled={!content || isPending}
       >
-        {loading ? "Posting..." : "Post"}
+        {isPending ? "Posting..." : "Post"}
       </Button>
     </form>
   );

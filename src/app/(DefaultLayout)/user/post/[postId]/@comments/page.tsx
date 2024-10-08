@@ -54,14 +54,10 @@ export default async function Comments({
     }),
   };
 
-  const handleCommentAdded = () => {};
-
-  const handleCommentDelete = () => {};
-
   return (
     <div className="p-4 w-full md:max-w-4xl mx-auto mb-6 mt-5">
       <h2 className="text-lg font-semibold mb-4">Comments</h2>
-      <CommentForm postId={params.postId} onCommentAdded={handleCommentAdded} />
+      <CommentForm postId={params.postId} />
       <div className="mt-4 space-y-4 w-full">
         {/* Render the fetched posts */}
         {isLoading &&
@@ -79,12 +75,7 @@ export default async function Comments({
                 className="w-full"
               >
                 <div className="max-w-4xl w-full">
-                  <Comment
-                    comment={comment}
-                    onDelete={handleCommentDelete}
-                    onReply={() => {}}
-                    onUpdate={() => {}}
-                  />
+                  <Comment comment={comment} />
                 </div>
               </motion.div>
             ))

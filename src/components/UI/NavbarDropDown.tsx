@@ -94,6 +94,7 @@ export default function NavbarDropdown() {
           </DropdownMenu>
         ) : (
           <DropdownMenu aria-label="Static Actions">
+            
             <DropdownItem onClick={() => handleNavigation("/admin/profile")}>
               Profile
             </DropdownItem>

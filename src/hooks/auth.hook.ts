@@ -1,11 +1,18 @@
-import { useMutation } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import {
+  followUser,
   forgetPassword,
+  getRecommended,
   getVerified,
   loginUser,
   registerUser,
   resetPassword,
+  unFollowUser,
 } from "../services/AuthService";
 import { toast } from "sonner";
 
@@ -68,6 +75,47 @@ export const useGetVerified = () => {
     onSuccess: ({ data }) => {
       window.location.href = data.payment_url;
       toast.success("Verification initiated successfully.");
+    },
+    onError: (error) => {
+      toast.error("Something went wrong.");
+    },
+  });
+};
+
+export const useGetRecommended = () => {
+  return useInfiniteQuery({
+    queryKey: ["GET_RECOMMENDED"],
+    queryFn: async ({ pageParam = 1 }) => await getRecommended(pageParam, 5),
+    getNextPageParam: (lastPage) => lastPage.nextPage, // Determine if there's a next page
+    initialPageParam: 1, // Set the initial page to 1
+  });
+};
+
+export const useFollowUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation<any, Error, { userId: string }>({
+    mutationKey: ["USER_FOLLOW"],
+    mutationFn: async ({ userId }) => await followUser({ userId }),
+    onSuccess: () => {
+      // window.location.href = data.payment_url;
+      queryClient.invalidateQueries({ queryKey: ["GET_RECOMMENDED"] });
+      // toast.success("Verification initiated successfully.");
+    },
+    onError: (error) => {
+      toast.error("Something went wrong.");
+    },
+  });
+};
+
+export const useUnFollowUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation<any, Error, { userId: string }>({
+    mutationKey: ["USER_UNFOLLOW"],
+    mutationFn: async ({ userId }) => await unFollowUser({ userId }),
+    onSuccess: () => {
+      // window.location.href = data.payment_url;
+      queryClient.invalidateQueries({ queryKey: ["GET_RECOMMENDED"] });
+      // toast.success("Verification initiated successfully.");
     },
     onError: (error) => {
       toast.error("Something went wrong.");

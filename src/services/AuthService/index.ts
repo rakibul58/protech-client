@@ -128,3 +128,38 @@ export const getVerified = async () => {
     throw new Error(error);
   }
 };
+
+export const getRecommended = async (page = 1, limit = 5) => {
+  try {
+    const { data } = await axiosInstance.get(
+      `/auth/recommended?fields=_id,name,profileImg,email,isVerified&page=${page}&limit=${limit}`
+    );
+    // console.log(payload);
+    // console.log({data});
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const followUser = async ({ userId }: { userId: string }) => {
+  try {
+    const { data } = await axiosInstance.post(`/auth/follow/user/${userId}`);
+    // console.log(payload);
+    // console.log({data});
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const unFollowUser = async ({ userId }: { userId: string }) => {
+  try {
+    const { data } = await axiosInstance.post(`/auth/unFollow/user/${userId}`);
+    // console.log(payload);
+    // console.log({data});
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};

@@ -7,6 +7,7 @@ import {
   HandThumbUpIcon,
 } from "@heroicons/react/24/outline";
 import {
+  CheckBadgeIcon,
   HandThumbDownIcon as SolidThumbDownIcon,
   HandThumbUpIcon as SolidThumbUpIcon,
 } from "@heroicons/react/24/solid";
@@ -132,8 +133,11 @@ export default function PostCard({ post }: { post: IPost }) {
         />
         {/* Author Name and Post Time */}
         <div>
-          <h4 className="text-lg font-bold dark:text-white">
+          <h4 className="text-lg font-bold dark:text-white flex gap-1 items-center">
             {(post?.author as IUser)?.name}
+            {(post?.author as IUser)?.isVerified && (
+              <CheckBadgeIcon className="size-5 text-primary" />
+            )}
           </h4>
           <span className="text-sm text-gray-500 dark:text-gray-400">
             {new Date(post.createdAt).toLocaleString()}
@@ -142,7 +146,7 @@ export default function PostCard({ post }: { post: IPost }) {
       </div>
 
       {/* Post Content */}
-      <div ref={postRef} className="mb-4">
+      <div ref={postRef} className="mb-4 w-full">
         <div
           className="text-gray-700 dark:text-gray-300"
           dangerouslySetInnerHTML={{ __html: post.content }}

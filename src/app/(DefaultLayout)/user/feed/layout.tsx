@@ -19,28 +19,24 @@ export default function Layout({
       <div className="hidden">{children}</div>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 px-4">
         {/* Recommended Section (Left Side) - Hidden on small screens */}
-        <div className="hidden lg:block lg:col-span-3">
-          <div className="sticky top-44 w-full">
-            {" "}
-            <h2 className="text-lg font-bold mb-2">Recommended Profiles</h2>
-            {recommended}
-          </div>
-        </div>
 
         {/* Posts Section (Center) */}
-        <div className="col-span-12 lg:col-span-6">{posts}</div>
+        <div className="col-span-12 lg:col-span-7">{posts}</div>
 
         {/* Followers and Followed Section (Right Side) - Hidden on small screens */}
-        <div className="hidden lg:block lg:col-span-3 space-y-6 md:mt-28">
+        <div className="hidden lg:block lg:col-span-5 space-y-6 md:mt-28">
           <div className="sticky top-44 space-y-6">
             <div className="mb-6">
+              <div className="sticky top-44 w-full"> {recommended}</div>
+            </div>
+            {/* <div className="mb-6">
               <h2 className="text-lg font-bold mb-2">My Followers</h2>
               {followers}
             </div>
             <div>
               <h2 className="text-lg font-bold mb-2">Followed Profiles</h2>
               {followed}
-            </div>
+            </div> */}
           </div>
         </div>
 

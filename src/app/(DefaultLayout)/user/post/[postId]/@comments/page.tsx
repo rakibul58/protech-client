@@ -4,11 +4,10 @@ import CommentForm from "@/src/components/UI/CommentForm";
 import CommentSkeleton from "@/src/components/UI/CommentSkeleton";
 import { useGetComments } from "@/src/hooks/comment.hook";
 import { Button } from "@nextui-org/button";
-import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 
-export default async function Comments({
+export default function Comments({
   params,
 }: {
   params: { postId: string };
@@ -19,10 +18,8 @@ export default async function Comments({
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-    refetch,
   } = useGetComments(params.postId);
 
-  const queryClient = useQueryClient();
   const loadMoreRef = useRef(null);
   // Intersection Observer to load more posts when the bottom of the page is reached
   useEffect(() => {
@@ -83,7 +80,7 @@ export default async function Comments({
 
         {/* Skeleton loading when fetching more posts */}
         {isFetchingNextPage &&
-          [...Array(5)].map((_, index: number) => (
+          [...Array(1)].map((_, index: number) => (
             <CommentSkeleton key={index} />
           ))}
 
@@ -96,9 +93,7 @@ export default async function Comments({
             {/* Back to Top button */}
             <Button
               onClick={() => {
-                window.scrollTo({ top: 0, behavior: "smooth" }),
-                  queryClient.removeQueries({ queryKey: ["GET_COMMENTS"] });
-                refetch();
+                window.scrollTo({ top: 0, behavior: "smooth" });
               }}
               variant="light"
               color="primary"

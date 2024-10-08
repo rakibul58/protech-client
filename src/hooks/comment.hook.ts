@@ -3,7 +3,12 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { createComment, getComments } from "../services/CommentService";
+import {
+  createComment,
+  deleteComment,
+  getComments,
+  updateComment,
+} from "../services/CommentService";
 import { toast } from "sonner";
 
 // Hook for infinite scrolling with React Query
@@ -24,7 +29,7 @@ export const useAddComment = () => {
     Error,
     { content: string; parent?: string | null; post: string }
   >({
-    mutationKey: ["GET_COMMENTS"],
+    mutationKey: ["ADD_COMMENTS"],
     mutationFn: async (payload) => await createComment(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["GET_COMMENTS"] });
@@ -34,6 +39,42 @@ export const useAddComment = () => {
     onError: (error) => {
       console.log(error);
       toast.error("Failed to add comment!");
+    },
+  });
+};
+
+export const useUpdateComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<any, Error, { id: string; payload: { content: string } }>({
+    mutationKey: ["UPDATE_COMMENTS"],
+    mutationFn: async ({ id, payload }) => await updateComment(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_COMMENTS"] });
+      // queryClient.refetchQueries({ queryKey: ["GET_POSTS"], exact: true });
+      toast.success("Comment updated successfully.");
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Failed to update comment!");
+    },
+  });
+};
+
+export const useDeleteComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<any, Error, { id: string }>({
+    mutationKey: ["DELETE_COMMENTS"],
+    mutationFn: async ({ id }) => await deleteComment(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_COMMENTS"] });
+      // queryClient.refetchQueries({ queryKey: ["GET_POSTS"], exact: true });
+      toast.success("Comment Deleted successfully.");
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Failed to delete comment!");
     },
   });
 };

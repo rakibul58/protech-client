@@ -32,3 +32,26 @@ export const createComment = async (payload: {
     throw new Error(error.response.data.message);
   }
 };
+
+export const updateComment = async (
+  id: string,
+  payload: { content: string }
+) => {
+  try {
+    const { data } = await axiosInstance.put(`/comments/${id}`, payload);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const deleteComment = async (id: string) => {
+  try {
+    const { data } = await axiosInstance.delete(`/comments/${id}`);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};

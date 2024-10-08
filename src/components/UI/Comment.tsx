@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { IComment } from "@/src/types";
 import { useUser } from "@/src/context/user.provider";
-import { useAddComment } from "@/src/hooks/comment.hook";
+import {
+  useAddComment,
+  useDeleteComment,
+  useUpdateComment,
+} from "@/src/hooks/comment.hook";
 import { Button } from "@nextui-org/button";
 
 interface CommentProps {
@@ -16,10 +20,18 @@ export default function Comment({ comment }: CommentProps) {
   const [replyContent, setReplyContent] = useState("");
   const [editContent, setEditContent] = useState(comment.content);
   const { mutate: addReply, isPending } = useAddComment();
+  const { mutate: updateComment, isPending: isUpdatePending } =
+    useUpdateComment();
+  const { mutate: deleteComment } = useDeleteComment();
 
-  const handleUpdate = () => {
-    //     onUpdate(comment._id, editContent);
-    setIsEditing(false);
+  const handleUpdate = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      updateComment({ id: comment._id, payload: { content: editContent } });
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+    }
   };
 
   const handleReply = (e: React.FormEvent) => {
@@ -34,7 +46,15 @@ export default function Comment({ comment }: CommentProps) {
       setIsReplying(false);
       setShowReplies(true);
     } catch (error) {
-      console.error("Failed to add comment:", error);
+      console.error("Failed to update comment:", error);
+    }
+  };
+
+  const handleDelete = () => {
+    try {
+      deleteComment({ id: comment._id });
+    } catch (error) {
+      console.error("Failed to update comment:", error);
     }
   };
 
@@ -57,10 +77,10 @@ export default function Comment({ comment }: CommentProps) {
               onClick={() => setIsEditing((prev) => !prev)}
               className="ml-auto px-2 text-sm text-blue-500 hover:underline"
             >
-              Edit
+              {!isEditing ? "Edit" : "Cancel Edit"}
             </button>
             <button
-              //       onClick={() => onDelete(comment._id)}
+              onClick={() => handleDelete()}
               className="px-2 text-sm text-red-500 hover:underline"
             >
               Delete
@@ -70,20 +90,21 @@ export default function Comment({ comment }: CommentProps) {
       </div>
 
       {isEditing ? (
-        <div>
+        <form onSubmit={handleUpdate} className="mt-2 flex items-center gap-3">
           <input
             type="text"
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
-            className="w-full px-2 py-1 border border-gray-300 rounded dark:bg-gray-700"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
           />
-          <button
-            onClick={handleUpdate}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          <Button
+            type="submit"
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50 h-full"
+            disabled={editContent === comment.content || isPending}
           >
-            Update
-          </button>
-        </div>
+            {isUpdatePending ? "Updating..." : "Update"}
+          </Button>
+        </form>
       ) : (
         <p className="text-sm text-gray-700 dark:text-gray-300">
           {comment.content}

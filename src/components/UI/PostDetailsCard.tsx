@@ -1,26 +1,26 @@
+"use client";
+
+import { useUser } from "@/src/context/user.provider";
+import { useDownVotePost, useUpVotePost } from "@/src/hooks/post.hook";
 import { IPost, IUser } from "@/src/types";
-import { Button } from "@nextui-org/button";
-import {
-  ArrowDownCircleIcon,
-  ChatBubbleLeftIcon,
-  HandThumbDownIcon,
-  HandThumbUpIcon,
-} from "@heroicons/react/24/outline";
 import {
   CheckBadgeIcon,
   HandThumbDownIcon as SolidThumbDownIcon,
   HandThumbUpIcon as SolidThumbUpIcon,
 } from "@heroicons/react/24/solid";
-import { useRef, useState } from "react";
-import { jsPDF } from "jspdf";
+import {
+  HandThumbDownIcon,
+  HandThumbUpIcon,
+  ArrowDownCircleIcon,
+} from "@heroicons/react/24/outline";
+import { Button } from "@nextui-org/button";
 import html2canvas from "html2canvas";
-import PayWall from "./PayWall";
-import { useUser } from "@/src/context/user.provider";
-import { useDownVotePost, useUpVotePost } from "@/src/hooks/post.hook";
-import Link from "next/link";
-// import ShareComponent from "./ShareComponent";
+import jsPDF from "jspdf";
+import { useRef, useState } from "react";
+import ShareComponent from "./ShareComponent";
 
-export default function PostCard({ post }: { post: IPost }) {
+export default function PostDetailsCard({ post }: { post: IPost }) {
+  // console.log({ post });
   const postRef = useRef<HTMLDivElement | null>(null); // Create a reference to the post content
   const { user } = useUser();
 
@@ -29,7 +29,7 @@ export default function PostCard({ post }: { post: IPost }) {
       const element = postRef.current;
 
       // Apply a temporary class to add padding/margins to images
-      element.querySelectorAll("img").forEach((img) => {
+      element.querySelectorAll("img").forEach((img: any) => {
         img.style.padding = "10px 0"; // Add padding to both top and bottom of images
       });
 
@@ -80,8 +80,10 @@ export default function PostCard({ post }: { post: IPost }) {
       });
     }
   };
-  const [upvotesCount, setUpvotesCount] = useState(post.upvotes.length);
-  const [downvotesCount, setDownvotesCount] = useState(post.downvotes.length);
+  const [upvotesCount, setUpvotesCount] = useState(post.upvotes.length || 0);
+  const [downvotesCount, setDownvotesCount] = useState(
+    post.downvotes.length || 0
+  );
   const [isUpVoted, setIsUpVoted] = useState(
     post.upvotes.includes(user?._id as string)
   );
@@ -115,17 +117,8 @@ export default function PostCard({ post }: { post: IPost }) {
       setUpvotesCount((prev) => prev - 1);
     }
   };
-
-  // if (loading) {
-  //   return <PostCardSkeleton />;
-  // }
-
-  // console.log({ post });
-
   return (
-    <div className="p-4 bg-white dark:bg-gray-800 shadow-md rounded-lg w-full mb-6">
-      {/* Post Header - Author and Time */}
-      {post?.isPremium && !user?.isVerified && <PayWall />}
+    <div className="p-4 bg-white dark:bg-gray-800 shadow-md rounded-lg w-full md:max-w-4xl mx-auto mb-6 mt-5">
       <div className="flex items-center mb-4">
         {/* Profile Picture */}
         <img
@@ -203,21 +196,6 @@ export default function PostCard({ post }: { post: IPost }) {
             <span className="dark:text-white">{downvotesCount}</span>
           </Button>
 
-          {/* Comment Icon */}
-          <Link href={`/user/post/${post._id}`}>
-            <Button
-              isIconOnly
-              color="default"
-              variant="light"
-              className="flex items-center space-x-2"
-            >
-              <ChatBubbleLeftIcon className="w-6 h-6 text-gray-500 dark:text-gray-300" />
-              <span className="dark:text-white">
-                {post?.comments ? post?.comments?.length : 0}
-              </span>
-            </Button>
-          </Link>
-
           <Button
             isIconOnly
             color="warning"
@@ -227,21 +205,22 @@ export default function PostCard({ post }: { post: IPost }) {
           >
             <ArrowDownCircleIcon className="w-6 h-6" />
           </Button>
-          {/* <ShareComponent data={post} /> */}
+
+          <ShareComponent data={post} />
         </div>
 
         {/* Follow Button
-        {true && (
-          <Button
-            // onClick={handleFollow}
-            color="primary"
-            variant="solid"
-            className="flex items-center space-x-1"
-          >
-            <UserPlusIcon className="w-6 h-6 text-white" />
-            <span>Follow</span>
-          </Button>
-        )} */}
+          {true && (
+            <Button
+              // onClick={handleFollow}
+              color="primary"
+              variant="solid"
+              className="flex items-center space-x-1"
+            >
+              <UserPlusIcon className="w-6 h-6 text-white" />
+              <span>Follow</span>
+            </Button>
+          )} */}
       </div>
     </div>
   );

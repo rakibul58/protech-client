@@ -59,3 +59,14 @@ export interface IPost {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IComment {
+  _id: string;
+  content: string;
+  author: Partial<IUser>;
+  post: string;
+  parent: any;
+  createdAt: string;
+  updatedAt: string;
+  replies: IComment[];
+}

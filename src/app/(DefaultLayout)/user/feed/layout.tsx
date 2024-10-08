@@ -24,10 +24,10 @@ export default function Layout({
         <div className="col-span-12 lg:col-span-7">{posts}</div>
 
         {/* Followers and Followed Section (Right Side) - Hidden on small screens */}
-        <div className="hidden lg:block lg:col-span-5 space-y-6 md:mt-28">
-          <div className="sticky top-44 space-y-6">
+        <div className="hidden lg:block lg:col-span-5 space-y-6">
+          <div className="sticky top-40 space-y-6">
             <div className="mb-6">
-              <div className="sticky top-44 w-full"> {recommended}</div>
+              <div className="w-full"> {recommended}</div>
             </div>
             {/* <div className="mb-6">
               <h2 className="text-lg font-bold mb-2">My Followers</h2>

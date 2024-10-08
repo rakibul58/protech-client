@@ -1,19 +1,18 @@
 "use client";
-import PostCard from "@/src/components/UI/PostCard";
-import PostCardSkeleton from "@/src/components/UI/PostCardSkeleton";
-import { useGetPosts } from "@/src/hooks/post.hook";
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import Comment from "@/src/components/UI/Comment";
+import CommentForm from "@/src/components/UI/CommentForm";
+import CommentSkeleton from "@/src/components/UI/CommentSkeleton";
+import { useGetComments } from "@/src/hooks/comment.hook";
 import { Button } from "@nextui-org/button";
-import TopSection from "@/src/components/modules/Feed/TopSection";
 import { useQueryClient } from "@tanstack/react-query";
-import { useUser } from "@/src/context/user.provider";
-export default function FeedPage() {
-  const { user } = useUser();
-  const queryClient = useQueryClient();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("");
-  const [sort, setSort] = useState("-createdAt");
+import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+
+export default async function Comments({
+  params,
+}: {
+  params: { postId: string };
+}) {
   const {
     data,
     isLoading,
@@ -21,16 +20,10 @@ export default function FeedPage() {
     fetchNextPage,
     hasNextPage,
     refetch,
-  } = useGetPosts(searchTerm, category, sort);
+  } = useGetComments(params.postId);
 
-  // Ref for detecting when the user reaches the bottom of the page
+  const queryClient = useQueryClient();
   const loadMoreRef = useRef(null);
-
-  useEffect(() => {
-    queryClient.removeQueries({ queryKey: ["GET_POSTS"] });
-    refetch();
-  }, [category, sort, searchTerm]);
-
   // Intersection Observer to load more posts when the bottom of the page is reached
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -49,7 +42,6 @@ export default function FeedPage() {
     };
   }, [hasNextPage, fetchNextPage]);
 
-  // Animation variants for staggered effect
   const postVariants = {
     hidden: { opacity: 0, y: 50 }, // Start from offscreen and invisible
     visible: (i: number) => ({
@@ -62,45 +54,37 @@ export default function FeedPage() {
     }),
   };
 
-  return (
-    <div>
-      {" "}
-      <div className="md:hidden block max-w-6xl mx-auto w-full fixed bottom-0 left-0 right-0 z-50 p-5 bg-white dark:bg-black bg-opacity-70 backdrop-blur-md col-span-12 lg:col-span-12">
-        <TopSection
-          onSearch={setSearchTerm}
-          setCategory={setCategory}
-          setSort={setSort}
-        />
-      </div>
-      <div className="hidden md:block max-w-6xl mx-auto w-full fixed top-14 left-0 right-0 z-50 p-5 bg-opacity-70 backdrop-blur-md col-span-12 lg:col-span-12">
-        <TopSection
-          onSearch={setSearchTerm}
-          setCategory={setCategory}
-          setSort={setSort}
-        />
-      </div>
-      <div className="flex flex-col gap-5 items-center justify-center w-full mb-40 mt-8 md:mt-28 md:mb-10">
-        {/* Show skeleton loader while fetching the first batch of posts */}
-        {isLoading &&
-          [...Array(5)].map((_, index: number) => (
-            <PostCardSkeleton key={index} />
-          ))}
+  const handleCommentAdded = () => {};
 
+  const handleCommentDelete = () => {};
+
+  return (
+    <div className="p-4 w-full md:max-w-4xl mx-auto mb-6 mt-5">
+      <h2 className="text-lg font-semibold mb-4">Comments</h2>
+      <CommentForm postId={params.postId} onCommentAdded={handleCommentAdded} />
+      <div className="mt-4 space-y-4 w-full">
         {/* Render the fetched posts */}
+        {isLoading &&
+          [...Array(5)].map((_, index: number) => <CommentSkeleton />)}
         {!isLoading &&
           data?.pages.map((page, pageIndex) =>
-            page.result.map((post: any, postIndex: number) => (
+            page.result.map((comment: any, commentIndex: number) => (
               // post.author._id !== (user?._id) &&
               <motion.div
-                key={`${pageIndex}-${postIndex}`}
-                custom={postIndex}
+                key={`${pageIndex}-${commentIndex}`}
+                custom={commentIndex}
                 initial="hidden"
                 animate="visible"
                 variants={postVariants}
                 className="w-full"
               >
-                <div className="max-w-3xl w-full">
-                  <PostCard post={post} />
+                <div className="max-w-4xl w-full">
+                  <Comment
+                    comment={comment}
+                    onDelete={handleCommentDelete}
+                    onReply={() => {}}
+                    onUpdate={() => {}}
+                  />
                 </div>
               </motion.div>
             ))
@@ -109,7 +93,7 @@ export default function FeedPage() {
         {/* Skeleton loading when fetching more posts */}
         {isFetchingNextPage &&
           [...Array(5)].map((_, index: number) => (
-            <PostCardSkeleton key={index} />
+            <CommentSkeleton key={index} />
           ))}
 
         {/* Observer target for fetching more posts */}
@@ -122,7 +106,7 @@ export default function FeedPage() {
             <Button
               onClick={() => {
                 window.scrollTo({ top: 0, behavior: "smooth" }),
-                  queryClient.removeQueries({ queryKey: ["GET_POSTS"] });
+                  queryClient.removeQueries({ queryKey: ["GET_COMMENTS"] });
                 refetch();
               }}
               variant="light"

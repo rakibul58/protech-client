@@ -37,9 +37,14 @@ export const createPosts = async (payload: {
   isPremium: boolean;
 }) => {
   try {
-     // Ensure new post initializes downvotes
-    const newPayload = {...payload , upvotes:[],
-      downvotes: [], upvoteCount: 0, downvoteCount: 0 }
+    // Ensure new post initializes downvotes
+    const newPayload = {
+      ...payload,
+      upvotes: [],
+      downvotes: [],
+      upvoteCount: 0,
+      downvoteCount: 0,
+    };
     const { data } = await axiosInstance.post(`/posts`, newPayload);
     return data;
   } catch (error: any) {
@@ -66,6 +71,17 @@ export const downVotePost = async ({ postId }: { postId: string }) => {
     return data;
   } catch (error: any) {
     console.log({ error });
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const getPostById = async (id: string) => {
+  try {
+    // console.log({sort});
+    const { data } = await axiosInstance.get(`/posts/${id}`);
+
+    return data;
+  } catch (error: any) {
     throw new Error(error.response.data.message);
   }
 };

@@ -8,6 +8,8 @@ import { FieldValues } from "react-hook-form";
 import {
   followUser,
   forgetPassword,
+  getFollowers,
+  getFollowing,
   getRecommended,
   getUserProfile,
   getVerified,
@@ -94,6 +96,20 @@ export const useGetRecommended = () => {
   });
 };
 
+export const useGetFollowers = (page = 1, limit = 5) => {
+  return useQuery({
+    queryKey: ["GET_FOLLOWER", page, limit],
+    queryFn: async () => await getFollowers(page, limit),
+  });
+};
+
+export const useGetFollowing = (page = 1, limit = 5) => {
+  return useQuery({
+    queryKey: ["GET_FOLLOWING", page, limit],
+    queryFn: async () => await getFollowing(page, limit),
+  });
+};
+
 export const useFollowUser = () => {
   const queryClient = useQueryClient();
   return useMutation<any, Error, { userId: string }>({
@@ -101,7 +117,15 @@ export const useFollowUser = () => {
     mutationFn: async ({ userId }) => await followUser({ userId }),
     onSuccess: () => {
       // window.location.href = data.payment_url;
-      queryClient.invalidateQueries({ queryKey: ["GET_RECOMMENDED"] });
+      queryClient.invalidateQueries({
+        queryKey: ["GET_RECOMMENDED"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["GET_FOLLOWING"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["GET_FOLLOWER"],
+      });
       // toast.success("Verification initiated successfully.");
     },
     onError: (error) => {
@@ -117,7 +141,15 @@ export const useUnFollowUser = () => {
     mutationFn: async ({ userId }) => await unFollowUser({ userId }),
     onSuccess: () => {
       // window.location.href = data.payment_url;
-      queryClient.invalidateQueries({ queryKey: ["GET_RECOMMENDED"] });
+      queryClient.invalidateQueries({
+        queryKey: ["GET_RECOMMENDED"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["GET_FOLLOWING"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["GET_FOLLOWER"],
+      });
       // toast.success("Verification initiated successfully.");
     },
     onError: (error) => {

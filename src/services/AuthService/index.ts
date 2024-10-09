@@ -142,6 +142,42 @@ export const getRecommended = async (page = 1, limit = 5) => {
   }
 };
 
+export const getFollowers = async (page = 1, limit = 5) => {
+  try {
+    // console.log({sort});
+    const { data } = await axiosInstance.get(
+      `/auth/followers?page=${page}&limit=${limit}`
+    );
+
+    // console.log(data?.data.result);
+
+    return {
+      result: data?.data?.result, // Posts
+      totalPage: data?.data?.meta?.totalPage, // Total number of pages
+      nextPage: page < data?.data?.meta?.totalPage ? page + 1 : undefined, // Calculate the next page
+    };
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const getFollowing = async (page = 1, limit = 5) => {
+  try {
+    // console.log({sort});
+    const { data } = await axiosInstance.get(
+      `/auth/following?fields=_id,name,profileImg,email,isVerified&page=${page}&limit=${limit}`
+    );
+
+    return {
+      result: data?.data?.result, // Posts
+      totalPage: data?.data?.meta?.totalPage, // Total number of pages
+      nextPage: page < data?.data?.meta?.totalPage ? page + 1 : undefined, // Calculate the next page
+    };
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export const followUser = async ({ userId }: { userId: string }) => {
   try {
     const { data } = await axiosInstance.post(`/auth/follow/user/${userId}`);
@@ -180,7 +216,7 @@ export const updateUserProfile = async (payload: {
   name?: string;
   phone?: string;
   preferences?: string;
-  profileImg?: string
+  profileImg?: string;
 }) => {
   try {
     const { data: result } = await axiosInstance.put(`/auth/me`, payload);

@@ -133,7 +133,7 @@ const MyPosts: React.FC = () => {
               <TableRow key={post._id}>
                 <TableCell>
                   <Link
-                    className="hover:text-blue-400"
+                    className="text-blue-300 hover:text-blue-400"
                     href={`/user/post/${post._id}`}
                   >
                     Show

@@ -37,7 +37,7 @@ export interface IUser {
   profileImg: string;
   createdAt: string;
   updatedAt: string;
-  commentsCount?: number;
+  followedBack?: boolean
   __v: number;
 }
 

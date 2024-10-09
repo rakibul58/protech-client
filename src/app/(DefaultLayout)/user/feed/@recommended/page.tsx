@@ -1,14 +1,14 @@
 "use client";
 import RecommendedUser from "@/src/components/UI/RecommendedUser";
 import RecommendedUserSkeleton from "@/src/components/UI/RecommendedUserSkeleton";
-import { useGetRecommended } from "@/src/hooks/auth.hook";
+import { useGetRecommended, useGetUserProfile } from "@/src/hooks/auth.hook";
 import { Button } from "@nextui-org/button";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-export default async function Page() {
+export default async function Recommended() {
   const { data: recommendedUsers, isLoading } = useGetRecommended();
-
+  
   // console.log(recommendedUsers?.pages[0]?.result?.result);
 
   // Animation variants for staggered effect

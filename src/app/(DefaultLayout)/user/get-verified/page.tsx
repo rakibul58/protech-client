@@ -14,7 +14,7 @@ export default async function GetVerified() {
   return (
     <div>
       {isPending && <Loading />}
-      <div className="max-w-4xl mx-auto p-6 space-y-10 text-gray-800 dark:text-gray-200">
+      <div className="max-w-4xl mx-auto p-6 space-y-10 text-gray-800 dark:text-gray-200 mt-5">
         {/* Title */}
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-primary">

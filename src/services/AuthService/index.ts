@@ -163,3 +163,32 @@ export const unFollowUser = async ({ userId }: { userId: string }) => {
     throw new Error(error);
   }
 };
+
+export const getUserProfile = async () => {
+  try {
+    const { data: result } = await axiosInstance.get(`/auth/me`);
+    // console.log(payload);
+    // console.log(result.data);
+    return result.data;
+  } catch (error: any) {
+    console.log({ error });
+    throw new Error(error);
+  }
+};
+
+export const updateUserProfile = async (payload: {
+  name?: string;
+  phone?: string;
+  preferences?: string;
+  profileImg?: string
+}) => {
+  try {
+    const { data: result } = await axiosInstance.put(`/auth/me`, payload);
+    // console.log(payload);
+    // console.log(result.data);
+    return result.data;
+  } catch (error: any) {
+    console.log({ error });
+    throw new Error(error);
+  }
+};

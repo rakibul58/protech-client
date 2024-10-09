@@ -84,6 +84,7 @@ export default function PTEditor({ content, setContent }: MyEditorProps) {
             { value: "First.Name", title: "First Name" },
             { value: "Email", title: "Email" },
           ],
+          height: "40vh",
           ai_request: (request: any, respondWith: any) =>
             respondWith.string(() =>
               Promise.reject("See docs to implement AI Assistant")
@@ -91,6 +92,7 @@ export default function PTEditor({ content, setContent }: MyEditorProps) {
           images_upload_handler: example_image_upload_handler,
         }}
         initialValue=""
+        
       />
     </div>
   );

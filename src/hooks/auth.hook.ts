@@ -1,6 +1,7 @@
 import {
   useInfiniteQuery,
   useMutation,
+  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
@@ -8,11 +9,13 @@ import {
   followUser,
   forgetPassword,
   getRecommended,
+  getUserProfile,
   getVerified,
   loginUser,
   registerUser,
   resetPassword,
   unFollowUser,
+  updateUserProfile,
 } from "../services/AuthService";
 import { toast } from "sonner";
 
@@ -116,6 +119,36 @@ export const useUnFollowUser = () => {
       // window.location.href = data.payment_url;
       queryClient.invalidateQueries({ queryKey: ["GET_RECOMMENDED"] });
       // toast.success("Verification initiated successfully.");
+    },
+    onError: (error) => {
+      toast.error("Something went wrong.");
+    },
+  });
+};
+
+export const useGetUserProfile = () => {
+  return useQuery({
+    queryKey: ["GET_USER_PROFILE"],
+    queryFn: async () => {
+      const hookData = await getUserProfile();
+      // console.log({hookData});
+      return hookData;
+    },
+  });
+};
+
+export const useUpdateUserProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    any,
+    Error,
+    { name?: string; phone?: string; preferences?: string; profileImg?: string }
+  >({
+    mutationKey: ["UPDATE_PROFILE"],
+    mutationFn: async (payload) => await updateUserProfile(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_USER_PROFILE"] });
+      toast.success("Profile updated successfully.");
     },
     onError: (error) => {
       toast.error("Something went wrong.");

@@ -2,7 +2,7 @@
 
 ## Tips and Tricks Blog Site (Frontend)
 
-[Live URL](https://protech-client.vercel.app/)
+[Live URL](https://pro-tech-steel.vercel.app/)
 
 ### Table of Contents
 

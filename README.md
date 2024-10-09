@@ -1,53 +1,109 @@
-# Next.js & NextUI Template
+# Protech
 
-This is a template for creating applications using Next.js 14 (app directory) and NextUI (v2).
+## Tips and Tricks Blog Site (Frontend)
 
-[Try it on CodeSandbox](https://githubbox.com/nextui-org/next-app-template)
+[Live URL](https://protech-client.vercel.app/)
+
+### Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Usage Guide](#usage-guide)
+- [Usage](#usage)
+- [Environment Variables](#environment-variables)
+- [Credentials](#credentials)
+- [Contact](#contact)
+
+## Features
+
+- **User Authentication:** Secure sign-up, login, logout, and JWT-based authentication.
+- **Post Creation & Management:** Users can create posts with a rich text editor, categorize posts, and attach images.
+- **Upvote & Commenting System:** Users can upvote/downvote posts, comment, and interact with other posts.
+- **Admin Dashboard:** Manage users, posts, and analytics.
+- **Search & Filter:** Search and filter posts with debounced API calls.
+- **Payment Integration:** Premium access for exclusive posts using Aamarpay/Stripe.
 
 ## Technologies Used
 
-- [Next.js 14](https://nextjs.org/docs/getting-started)
-- [NextUI v2](https://nextui.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
+- **Frontend Framework:** Next.js
+- **UI Library:** NextUI
+- **Data Fetching & State Management:** Tanstack Query (React Query)
+- **HTTP Client:** Axios
+- **Deployment:** Vercel
 
-## How to Use
+## Usage Guide
 
-### Use the template with create-next-app
+Follow these instructions to set up and run the frontend application locally.
 
-To create a new project based on this template using `create-next-app`, run the following command:
+### Step 1
 
-```bash
-npx create-next-app -e https://github.com/nextui-org/next-app-template
-```
+Open your terminal and navigate to the directory where you want to add the project.
 
-### Install dependencies
+### Step 2
 
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
+Clone the repository using the following command:
 
 ```bash
-npm install
+git clone https://github.com/rakibul58/protech-client.git
 ```
 
-### Run the development server
+### Step 3
+
+Navigate into the project folder:
 
 ```bash
-npm run dev
+cd protech-client
 ```
 
-### Setup pnpm (optional)
+### Step 4
 
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
+Install the dependencies:
 
 ```bash
-public-hoist-pattern[]=*@nextui-org/*
+yarn install
 ```
 
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
+### Step 5
 
-## License
+Create a `.env.local` file in the root directory and add the following environment variables. Update these variables with your backend and API keys as necessary:
 
-Licensed under the [MIT license](https://github.com/nextui-org/next-app-template/blob/main/LICENSE).
+```plaintext
+NEXT_PUBLIC_BACKEND_URL=your_backend_url
+NEXT_PUBLIC_API_KEY=your_api_key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_key
+NEXT_PUBLIC_AMARPAY_STORE_ID=your_aamarpay_store_id
+NEXT_PUBLIC_AMARPAY_SIGNATURE_KEY=your_aamarpay_signature_key
+```
+
+### Step 6
+
+Run the application in development mode:
+
+```bash
+yarn dev
+```
+
+The app should now be running on `http://localhost:3000`.
+
+## Usage
+
+Once the frontend application is set up and running, you can access the homepage at `http://localhost:3000`. From here, you can register, log in, create posts, upvote, comment, and explore other features.
+
+## Credentials
+
+### Admin Credentials
+
+- **Email:** admin@protech.com
+- **Password:** 123
+
+### User Credentials
+
+- **Email:** student3@test.com
+- **Password:** 123
+
+## Contact
+
+For any questions or feedback, please contact:
+
+- **Name:** Muhammed Rakibul Hasan
+- **Email:** rhrahi14@gmail.com

@@ -1,11 +1,13 @@
 import {
   useInfiniteQuery,
   useMutation,
+  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import {
   createPosts,
   downVotePost,
+  getMyPosts,
   getPosts,
   upVotePost,
 } from "../services/PostService";
@@ -38,7 +40,7 @@ export const useCreatePosts = () => {
     mutationFn: async (payload) => await createPosts(payload),
     onSuccess: () => {
       // queryClient.invalidateQueries({ queryKey: ["GET_POSTS"] });
-      // queryClient.refetchQueries({ queryKey: ["GET_POSTS"], exact: true }); 
+      // queryClient.refetchQueries({ queryKey: ["GET_POSTS"], exact: true });
       toast.success("Post created successfully.");
     },
     onError: (error) => {
@@ -73,5 +75,19 @@ export const useDownVotePost = () => {
       // console.log(error);
       // toast.error("Failed to Create Post!");
     },
+  });
+};
+
+export const useGetMyPosts = (
+  page = 1,
+  searchTerm = "",
+  category = "",
+  sort = "-createdAt",
+  limit = 5
+) => {
+  return useQuery({
+    queryKey: ["GET_MY_POSTS", page, searchTerm, category, sort, limit],
+    queryFn: async () =>
+      await getMyPosts(page, limit, searchTerm, category, sort),
   });
 };

@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { handleImageUpload } from "@/src/services/ImageUpload";
 import Loading from "../../UI/Loading";
+import ProfileHeaderSkeleton from "./ProfileHeaderSkeleton";
 
 export default function ProfileHeader() {
   const { data: profile } = useGetUserProfile();
@@ -89,10 +90,10 @@ export default function ProfileHeader() {
     setIsEditing(false);
   };
 
-  if (!profile) return <div>Loading...</div>;
+  if (!profile) return <ProfileHeaderSkeleton />;
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-6">
+    <div className="max-w-5xl mx-auto p-6 space-y-6 w-full">
       {
         isPending && <Loading />
       }

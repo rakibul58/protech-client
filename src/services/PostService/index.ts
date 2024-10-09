@@ -85,3 +85,32 @@ export const getPostById = async (id: string) => {
     throw new Error(error.response.data.message);
   }
 };
+
+export const getMyPosts = async (
+  page = 1,
+  limit = 5,
+  searchTerm = "",
+  category = "",
+  sort = "-createdAt"
+) => {
+  try {
+    if (!sort) {
+      sort = "-createdAt";
+    }
+    let url = `/posts/me?sort=${sort}&page=${page}&limit=${limit}&searchTerm=${searchTerm}`;
+    if (category) {
+      url = `/posts/me?sort=${sort}&page=${page}&limit=${limit}&searchTerm=${searchTerm}&categories=${category}`;
+    }
+
+    // console.log({sort});
+    const { data } = await axiosInstance.get(url);
+
+    return {
+      result: data?.data?.result, // Posts
+      totalPage: data?.data?.meta?.totalPage, // Total number of pages
+      nextPage: page < data?.data?.meta?.totalPage ? page + 1 : undefined, // Calculate the next page
+    };
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};

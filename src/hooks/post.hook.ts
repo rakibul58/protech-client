@@ -6,9 +6,11 @@ import {
 } from "@tanstack/react-query";
 import {
   createPosts,
+  deletePostById,
   downVotePost,
   getMyPosts,
   getPosts,
+  updatePostById,
   upVotePost,
 } from "../services/PostService";
 import { toast } from "sonner";
@@ -89,5 +91,44 @@ export const useGetMyPosts = (
     queryKey: ["GET_MY_POSTS", page, searchTerm, category, sort, limit],
     queryFn: async () =>
       await getMyPosts(page, limit, searchTerm, category, sort),
+  });
+};
+
+export const useUpdatePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    any,
+    Error,
+    { postId: string; payload: { content: string } }
+  >({
+    mutationKey: ["UPDATE_POST"],
+    mutationFn: async ({ postId, payload }) =>
+      await updatePostById(postId, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_MY_POSTS"] });
+      toast.success("Post updated successful.");
+    },
+    onError: (error) => {
+      // console.log(error);
+      // toast.error("Failed to Create Post!");
+    },
+  });
+};
+
+export const useDeletePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<any, Error, { postId: string }>({
+    mutationKey: ["DELETE_POST"],
+    mutationFn: async ({ postId }) => await deletePostById(postId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_MY_POSTS"] });
+      toast.success("Post deleted successful.");
+    },
+    onError: (error) => {
+      // console.log(error);
+      // toast.error("Failed to Create Post!");
+    },
   });
 };

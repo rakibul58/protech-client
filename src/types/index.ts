@@ -56,6 +56,8 @@ export interface IPost {
   upvotes: string[];
   downvotes: string[];
   comments?: string[];
+  upvoteCount?: number;
+  downvoteCount?: number;
   createdAt: string;
   updatedAt: string;
 }

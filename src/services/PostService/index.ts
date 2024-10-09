@@ -86,6 +86,31 @@ export const getPostById = async (id: string) => {
   }
 };
 
+export const updatePostById = async (
+  id: string,
+  payload: { content: string }
+) => {
+  try {
+    // console.log({sort});
+    const { data } = await axiosInstance.put(`/posts/${id}`, payload);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const deletePostById = async (id: string) => {
+  try {
+    // console.log({sort});
+    const { data } = await axiosInstance.delete(`/posts/${id}`);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export const getMyPosts = async (
   page = 1,
   limit = 5,

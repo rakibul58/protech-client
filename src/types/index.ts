@@ -37,7 +37,7 @@ export interface IUser {
   profileImg: string;
   createdAt: string;
   updatedAt: string;
-  followedBack?: boolean
+  followedBack?: boolean;
   __v: number;
 }
 
@@ -71,4 +71,14 @@ export interface IComment {
   createdAt: string;
   updatedAt: string;
   replies: IComment[];
+}
+
+export interface IPayment {
+  _id: string;
+  user: IUser;
+  amount: number;
+  transactionId: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
 }

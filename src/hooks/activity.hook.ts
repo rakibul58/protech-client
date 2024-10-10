@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMonthlyActivity } from "../services/ActivityService";
+import {
+  getAllPayments,
+  getMonthlyActivity,
+} from "../services/ActivityService";
 
 export const useGetActivity = () => {
   return useQuery({
@@ -9,5 +12,12 @@ export const useGetActivity = () => {
       // console.log({hookData});
       return hookData;
     },
+  });
+};
+
+export const useGetAllPayments = (page = 1, limit = 5) => {
+  return useQuery({
+    queryKey: ["GET_ALL_PAYMENTS", page, limit],
+    queryFn: async () => await getAllPayments(page, limit),
   });
 };

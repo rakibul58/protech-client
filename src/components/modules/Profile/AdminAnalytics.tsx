@@ -57,16 +57,16 @@ const AdminAnalyticsCharts = () => {
   const [paymentsData, setPaymentsData] = useState<any>({});
 
   useEffect(() => {
-    const days = data?.activityLogs?.map(
+    const days = (data?.activityLogs || []).map(
       (log: ActivityLog) => `${log._id.day}-${log._id.month}-${log._id.year}`
-    ) || [];
+    );
 
     setActivityData({
       labels: days,
       datasets: [
         {
           label: "Logins",
-          data: data?.activityLogs?.map((log: ActivityLog) => log.count) || [],
+          data: (data?.activityLogs || []).map((log: ActivityLog) => log.count),
           borderColor: "blue",
           backgroundColor: "rgba(0, 123, 255, 0.3)",
           fill: true,
@@ -80,7 +80,7 @@ const AdminAnalyticsCharts = () => {
       datasets: [
         {
           label: "Posts",
-          data: data?.posts?.map((post: Post) => post.count) || [],
+          data: (data?.posts || []).map((post: Post) => post.count),
           backgroundColor: "skyblue",
           borderColor: "blue",
           borderWidth: 1,
@@ -94,13 +94,13 @@ const AdminAnalyticsCharts = () => {
         {
           type: "bar" as const,
           label: "Transactions",
-          data: data?.payments?.map((payment: Payment) => payment.transactionCount) || [],
+          data: (data?.payments || []).map((payment: Payment) => payment.transactionCount),
           backgroundColor: "orange",
         },
         {
           type: "line" as const,
           label: "Total Amount",
-          data: data?.payments?.map((payment: Payment) => payment.totalAmount) || [],
+          data: (data?.payments || []).map((payment: Payment) => payment.totalAmount),
           borderColor: "green",
           backgroundColor: "rgba(0, 255, 0, 0.3)",
           fill: true,
@@ -132,21 +132,21 @@ const AdminAnalyticsCharts = () => {
           <h3 className="text-lg font-medium text-center mb-4 text-gray-700 dark:text-gray-300">
             Daily Activity Logs
           </h3>
-          <Line data={activityData} options={chartOptions} />
+          {activityData?.labels && <Line data={activityData} options={chartOptions} />}
         </div>
 
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 w-full">
           <h3 className="text-lg font-medium text-center mb-4 text-gray-700 dark:text-gray-300">
             Daily Posts
           </h3>
-          <Bar data={postsData} options={chartOptions} />
+          {postsData?.labels && <Bar data={postsData} options={chartOptions} />}
         </div>
 
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 w-full">
           <h3 className="text-lg font-medium text-center mb-4 text-gray-700 dark:text-gray-300">
             Daily Payments
           </h3>
-          <Bar data={paymentsData} options={chartOptions} />
+          {paymentsData?.labels && <Bar data={paymentsData} options={chartOptions} />}
         </div>
       </div>
     </div>

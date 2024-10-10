@@ -94,6 +94,20 @@ export const useGetMyPosts = (
   });
 };
 
+export const useGetAllPostsForAdmin = (
+  page = 1,
+  searchTerm = "",
+  category = "",
+  sort = "-createdAt",
+  limit = 5
+) => {
+  return useQuery({
+    queryKey: ["GET_MY_POSTS", page, searchTerm, category, sort, limit],
+    queryFn: async () =>
+      await getPosts(page, limit, searchTerm, category, sort),
+  });
+};
+
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
 

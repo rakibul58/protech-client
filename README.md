@@ -68,11 +68,11 @@ yarn install
 Create a `.env.local` file in the root directory and add the following environment variables. Update these variables with your backend and API keys as necessary:
 
 ```plaintext
-NEXT_PUBLIC_BACKEND_URL=your_backend_url
-NEXT_PUBLIC_API_KEY=your_api_key
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_key
-NEXT_PUBLIC_AMARPAY_STORE_ID=your_aamarpay_store_id
-NEXT_PUBLIC_AMARPAY_SIGNATURE_KEY=your_aamarpay_signature_key
+NEXT_PUBLIC_BASE_API_DEV=
+NEXT_PUBLIC_BASE_API_PROD=
+NEXT_PUBLIC_CLOUDINARY_URI=
+NEXT_PUBLIC_CLOUDINARY_PRESET=
+NEXT_PUBLIC_EDITOR_API_KEY=
 ```
 
 ### Step 6

@@ -94,7 +94,19 @@ export default function NavbarDropdown() {
           </DropdownMenu>
         ) : (
           <DropdownMenu aria-label="Static Actions">
-            
+            <DropdownItem>
+              <div>
+                <div className="flex gap-1">
+                  <span className="text-secondary font-semibold">
+                    {user?.name}
+                  </span>{" "}
+                  <span>
+                    <CheckBadgeIcon className="size-5 text-primary" />
+                  </span>
+                </div>
+                <span>{user?.email}</span>
+              </div>
+            </DropdownItem>
             <DropdownItem onClick={() => handleNavigation("/admin/profile")}>
               Profile
             </DropdownItem>

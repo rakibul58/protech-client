@@ -7,14 +7,13 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Tabs, Tab } from "@nextui-org/tabs";
 import { handleImageUpload } from "@/src/services/ImageUpload";
 import Loading from "../../UI/Loading";
 import ProfileHeaderSkeleton from "./ProfileHeaderSkeleton";
 
 export default function ProfileHeader() {
   const { data: profile } = useGetUserProfile();
-  const {mutate: updateProfile, isPending} = useUpdateUserProfile();
+  const { mutate: updateProfile, isPending } = useUpdateUserProfile();
   const [isEditing, setIsEditing] = useState(false);
   const [originalData, setOriginalData] = useState({
     name: "",
@@ -68,25 +67,35 @@ export default function ProfileHeader() {
     // Upload image if a new file has been selected
     if (formData.profileImgFile) {
       try {
-        uploadedImageUrl = await handleImageUpload(formData.profileImgFile) as string;
+        uploadedImageUrl = (await handleImageUpload(
+          formData.profileImgFile
+        )) as string;
       } catch (error) {
         console.error("Error uploading image:", error);
         return;
       }
     }
 
-    updateProfile({name: formData.name, phone: formData.phone, preferences: formData.bio, profileImg: uploadedImageUrl})
+    updateProfile({
+      name: formData.name,
+      phone: formData.phone,
+      preferences: formData.bio,
+      profileImg: uploadedImageUrl,
+    });
 
     // Set the uploaded image URL in formData and update originalData
-    const updatedData = { ...formData, profileImg: uploadedImageUrl, profileImgFile: null };
+    const updatedData = {
+      ...formData,
+      profileImg: uploadedImageUrl,
+      profileImgFile: null,
+    };
     setFormData(updatedData);
     setOriginalData(updatedData);
     setIsEditing(false);
   };
 
-
   const handleCancel = () => {
-    setFormData({ ...originalData, profileImgFile: null }); 
+    setFormData({ ...originalData, profileImgFile: null });
     setIsEditing(false);
   };
 
@@ -94,9 +103,7 @@ export default function ProfileHeader() {
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6 w-full">
-      {
-        isPending && <Loading />
-      }
+      {isPending && <Loading />}
       {/* Enhanced Profile Header */}
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-8">
         <div className="relative w-32 h-32 sm:w-40 sm:h-40">

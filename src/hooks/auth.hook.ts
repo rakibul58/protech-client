@@ -6,8 +6,10 @@ import {
 } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import {
+  createAccount,
   followUser,
   forgetPassword,
+  getAllUsers,
   getFollowers,
   getFollowing,
   getRecommended,
@@ -17,9 +19,11 @@ import {
   registerUser,
   resetPassword,
   unFollowUser,
+  updateAccount,
   updateUserProfile,
 } from "../services/AuthService";
 import { toast } from "sonner";
+import { IUser } from "../types";
 
 export const useUserRegistration = () => {
   return useMutation<any, Error, FieldValues>({
@@ -184,6 +188,47 @@ export const useUpdateUserProfile = () => {
     },
     onError: (error) => {
       toast.error("Something went wrong.");
+    },
+  });
+};
+
+export const useGetAllUsers = (page = 1, limit = 5) => {
+  return useQuery({
+    queryKey: ["GET_ALL_USERS", page, limit],
+    queryFn: async () => await getAllUsers(page, limit),
+  });
+};
+
+export const useCreateAccount = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<any, Error, Partial<IUser>>({
+    mutationKey: ["CREATE_ACCOUNT"],
+    mutationFn: async (payload) => await createAccount(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_ALL_USERS"] });
+      toast.success("User Created successfully.");
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Failed to add user!");
+    },
+  });
+};
+
+export const useUpdateAccount = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<any, Error, { id: string; payload: Partial<IUser> }>({
+    mutationKey: ["UPDATE_ACCOUNT"],
+    mutationFn: async ({ id, payload }) => await updateAccount(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET_ALL_USERS"] });
+      toast.success("Account updated successfully.");
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Failed to update user!");
     },
   });
 };

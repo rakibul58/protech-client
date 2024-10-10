@@ -2,6 +2,7 @@
 
 import envConfig from "@/src/config/envConfig";
 import axiosInstance from "@/src/libs/AxiosInstance";
+import { IUser } from "@/src/types";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
@@ -226,5 +227,47 @@ export const updateUserProfile = async (payload: {
   } catch (error: any) {
     console.log({ error });
     throw new Error(error);
+  }
+};
+
+export const getAllUsers = async (page = 1, limit = 5) => {
+  try {
+    const url = `/auth/users?page=${page}&limit=${limit}&isDeleted=false`;
+
+    // console.log({sort});
+    const { data } = await axiosInstance.get(url);
+
+    // console.log(data.data);
+
+    return {
+      result: data?.data?.result, // Posts
+      totalPage: data?.data?.meta?.totalPage, // Total number of pages
+      nextPage: page < data?.data?.meta?.totalPage ? page + 1 : undefined, // Calculate the next page
+    };
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const createAccount = async (payload: Partial<IUser>) => {
+  try {
+    const { data } = await axiosInstance.post(`/auth/create-account`, payload);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const updateAccount = async (
+  userId: string,
+  payload: Partial<IUser>
+) => {
+  try {
+    const { data } = await axiosInstance.put(`/auth/users/${userId}`, payload);
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
   }
 };

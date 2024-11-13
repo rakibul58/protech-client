@@ -21,7 +21,7 @@
 - **Upvote & Commenting System:** Users can upvote/downvote posts, comment, and interact with other posts.
 - **Admin Dashboard:** Manage users, posts, and analytics.
 - **Search & Filter:** Search and filter posts with debounced API calls.
-- **Payment Integration:** Premium access for exclusive posts using Aamarpay/Stripe.
+- **Payment Integration:** Premium access for exclusive posts using Aamarpay.
 
 ## Technologies Used
 
